@@ -81,4 +81,12 @@
 
   <build>
   </build>
+
+  <distributionManagement>
+    <repository>
+      <id>bintray-larkvii-cqrsframework</id>
+      <name>larkvii-cqrsframework</name>
+      <url>https://api.bintray.com/maven/larkvii/cqrsframework/cqrsframework-vertx/;publish=1</url>
+    </repository>
+  </distributionManagement>
 </project>
