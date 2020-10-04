@@ -13,6 +13,8 @@ public class VertxProperties {
   private Integer eventLoopMaxExecuteTime;
   private Integer eventLoopPoolSize;
   private Integer workerPoolSize;
+  private Integer serverMetricsPort;
+  private String serverMetricsEndpoint;
   private Boolean swaggerEnable;
 
 }

@@ -17,10 +17,13 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("/api/v1")
 @Slf4j
-public final class SwaggerOpenApiDoc {
+public final class SwaggerOpenApiDocument {
 
-  @Autowired
-  private OpenApiContext openApiContext;
+  private final OpenApiContext openApiContext;
+
+  public SwaggerOpenApiDocument(final OpenApiContext openApiContext) {
+    this.openApiContext = openApiContext;
+  }
 
   @GET
   @Path("/swagger.json")
@@ -34,7 +37,7 @@ public final class SwaggerOpenApiDoc {
       String result = pretty ? Json.pretty(oas) : Json.mapper().writeValueAsString(oas);
       return result;
     } catch (JsonProcessingException e) {
-      e.printStackTrace();
+      log.error("Failed to get the OpenApi data", e);
     }
     return "{}";
   }

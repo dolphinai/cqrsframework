@@ -1,11 +1,9 @@
 package com.github.larkvii.cqrsframework.commons.exception;
 
-import com.github.larkvii.cqrsframework.commons.AppRuntimeException;
-
 /**
  * 无授权访问异常.
  */
-public final class WebAuthorizationException extends AppRuntimeException {
+public final class WebAuthorizationException extends WebAuthenticationException {
 
   public WebAuthorizationException() {
     super();

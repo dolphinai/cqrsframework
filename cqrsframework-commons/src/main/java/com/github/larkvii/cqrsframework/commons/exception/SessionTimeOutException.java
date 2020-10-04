@@ -1,11 +1,9 @@
 package com.github.larkvii.cqrsframework.commons.exception;
 
-import com.github.larkvii.cqrsframework.commons.AppRuntimeException;
-
 /**
  *
  */
-public class SessionTimeOutException extends AppRuntimeException {
+public class SessionTimeOutException extends WebAuthenticationException {
 
   public SessionTimeOutException() {
     super();

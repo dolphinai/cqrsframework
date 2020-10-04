@@ -1,9 +1,6 @@
 package com.github.larkvii.cqrsframework.commons.util;
 
-import lombok.SneakyThrows;
 import org.springframework.util.StringUtils;
-
-import java.net.InetAddress;
 
 /**
  *
@@ -33,11 +30,5 @@ public final class IpUtils {
         + (Integer.parseInt(octets[2]) << 8) + Integer.parseInt(octets[3]);
     }
     return null;
-  }
-
-  @SneakyThrows
-  public static String getLocalAddress() {
-    final InetAddress address = InetAddress.getLocalHost();
-    return address.getHostAddress();
   }
 }

@@ -10,6 +10,7 @@
   </parent>
   <artifactId>cqrsframework-core</artifactId>
   <version>1.0.0</version>
+  <packaging>jar</packaging>
   <name>cqrsframework-core</name>
 
   <properties>

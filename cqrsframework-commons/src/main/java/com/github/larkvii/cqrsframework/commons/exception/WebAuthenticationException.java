@@ -1,11 +1,9 @@
 package com.github.larkvii.cqrsframework.commons.exception;
 
-import com.github.larkvii.cqrsframework.commons.AppRuntimeException;
-
 /**
  * 登录身份验证异常.
  */
-public final class WebAuthenticationException extends AppRuntimeException {
+public class WebAuthenticationException extends RuntimeException {
 
   public WebAuthenticationException() {
     super();

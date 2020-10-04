@@ -17,11 +17,11 @@ import javax.ws.rs.core.Application;
 public abstract class AbstractServerVerticle extends AbstractVerticle {
 
   private final Application restApplication;
-  private final RestServerContext restServerContext;
+  private final RestServerOptions restServerOptions;
 
-  public AbstractServerVerticle(Application application, RestServerContext restServerContext) {
+  public AbstractServerVerticle(Application application, RestServerOptions restServerOptions) {
     this.restApplication = application;
-    this.restServerContext = restServerContext;
+    this.restServerOptions = restServerOptions;
   }
 
   @Override
@@ -29,17 +29,17 @@ public abstract class AbstractServerVerticle extends AbstractVerticle {
 
     final Router router = Router.router(vertx);
     // register
-    onRegisterRouterHandlers(router, restApplication, restServerContext);
+    onRegisterRouterHandlers(router, restApplication, restServerOptions);
     // start
-    onCreateHttpServer(startPromise, router, restServerContext.port());
+    onCreateHttpServer(startPromise, router, restServerOptions.getPort());
   }
 
-  protected void onRegisterRouterHandlers(final Router router, Application application, RestServerContext serverContext) {
+  protected void onRegisterRouterHandlers(final Router router, Application application, RestServerOptions serverOptions) {
     VertxResteasyDeployment deployment = new VertxResteasyDeployment();
     deployment.setAddCharset(true);
     deployment.setApplication(application);
-    deployment.setResourceFactories(serverContext.resourceFactories());
-    deployment.setProviders(serverContext.providers());
+    deployment.setResourceFactories(serverOptions.resourceFactories());
+    deployment.setProviders(serverOptions.providers());
     deployment.start();
 
     VertxRequestHandler restRequestHandler = new VertxRequestHandler(vertx, deployment);
@@ -51,7 +51,8 @@ public abstract class AbstractServerVerticle extends AbstractVerticle {
 
     // 配置静态文件
     router.route("/*").handler(StaticHandler.create());
-    if (serverContext.swaggerEnable()) {
+    // Swagger
+    if (serverOptions.swaggerEnable()) {
       router.route("/swagger-ui/*").handler(StaticHandler.create("META-INF/swagger-ui/"));
     }
   }

@@ -15,13 +15,13 @@ import javax.ws.rs.ext.Provider;
  *
  */
 @Slf4j
-public final class RestResourceAndProviderPostProcessor implements BeanFactoryAware, BeanPostProcessor {
+public final class RestResourceBindingProcessor implements BeanFactoryAware, BeanPostProcessor {
 
   private BeanFactory beanFactory;
-  private final RestServerContext restServerContext;
+  private final RestServerOptions restServerOptions;
 
-  public RestResourceAndProviderPostProcessor(final RestServerContext restServerContext) {
-    this.restServerContext = restServerContext;
+  public RestResourceBindingProcessor(final RestServerOptions restServerOptions) {
+    this.restServerOptions = restServerOptions;
   }
 
   @Override
@@ -33,15 +33,15 @@ public final class RestResourceAndProviderPostProcessor implements BeanFactoryAw
   public Object postProcessAfterInitialization(final Object bean, final String beanName) throws BeansException {
     Class<?> beanClass = bean.getClass();
     if (AnnotationUtils.findAnnotation(bean.getClass(), Path.class) != null) {
-      if (log.isInfoEnabled()) {
-        log.info("Rest Path: name={}, class={}", beanName, beanClass);
+      if (log.isDebugEnabled()) {
+        log.debug("Path: name={}, class={}", beanName, beanClass);
       }
-      restServerContext.resourceFactories().add(new SpringResourceFactory(beanName, beanFactory, bean.getClass()));
+      restServerOptions.resourceFactories().add(new SpringResourceFactory(beanName, beanFactory, bean.getClass()));
     } else if (AnnotationUtils.findAnnotation(bean.getClass(), Provider.class) != null) {
       if (log.isDebugEnabled()) {
-        log.debug("Rest Provider: name={}, class={}", beanName, beanClass);
+        log.debug("Provider: name={}, class={}", beanName, beanClass);
       }
-      restServerContext.providers().add(bean);
+      restServerOptions.providers().add(bean);
     }
     return bean;
   }

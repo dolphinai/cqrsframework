@@ -9,6 +9,7 @@ public final class ResultMap extends HashMap<String, Object> {
   public static final String DEFAULT_FAIL_CODE = "-1";
 
   private ResultMap(String returnCode, String returnMessage) {
+    super(8);
     this.with("code", returnCode)
       .with("message", returnMessage);
   }
@@ -34,7 +35,7 @@ public final class ResultMap extends HashMap<String, Object> {
   }
 
   public static ResultMap success() {
-    return of(DEFAULT_SUCCESS_CODE, "OK");
+    return of(DEFAULT_SUCCESS_CODE, null);
   }
 
   public static ResultMap fail() {

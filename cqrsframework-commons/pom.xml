@@ -10,6 +10,7 @@
   </parent>
   <artifactId>cqrsframework-commons</artifactId>
   <version>1.0.0</version>
+  <packaging>jar</packaging>
   <name>cqrsframework-commons</name>
 
   <properties>
@@ -33,10 +34,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

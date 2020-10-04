@@ -10,6 +10,7 @@
   </parent>
   <artifactId>cqrsframework-vertx</artifactId>
   <version>1.0.0</version>
+  <packaging>jar</packaging>
   <name>cqrsframework-vertx</name>
 
   <properties>
@@ -67,10 +68,12 @@
     <dependency>
       <groupId>io.swagger.core.v3</groupId>
       <artifactId>swagger-annotations</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>io.swagger.core.v3</groupId>
       <artifactId>swagger-jaxrs2</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

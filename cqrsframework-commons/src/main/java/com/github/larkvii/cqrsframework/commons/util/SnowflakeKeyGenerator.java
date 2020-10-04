@@ -225,7 +225,7 @@ public final class SnowflakeKeyGenerator {
    */
   public static long getWorkerIdByIP(int bits) throws AppRuntimeException {
     int shift = 64 - bits;
-    String serverAddr = IpUtils.getLocalAddress();
+    String serverAddr = MachineUtils.getHostAddress();
     if (serverAddr == null) {
       throw new AppRuntimeException("UnknownHostException");
     }

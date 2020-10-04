@@ -16,7 +16,7 @@ import java.util.concurrent.CompletionStage;
  */
 @Provider
 @SuppressWarnings("unchecked")
-public class SecureHeaderProvider implements AsyncWriterInterceptor {
+public class SecureResponseHeaderProvider implements AsyncWriterInterceptor {
 
   @Override
   public CompletionStage<Void> asyncAroundWriteTo(final AsyncWriterInterceptorContext context) {
@@ -35,7 +35,7 @@ public class SecureHeaderProvider implements AsyncWriterInterceptor {
     headers.add("Pragma", "no-cache");
     headers.add("Expires", "0");
     headers.add("Strict-Transport-Security", "max-age=3600; includeSubDomains");
-    headers.add("X-Frame-Options", "DENY");
+    headers.add("X-Frame-Options", "sameorigin");
     headers.add("X-Content-Type-Options", "nosniff");
     headers.add("X-XSS-Protection", "1; mode=block");
   }

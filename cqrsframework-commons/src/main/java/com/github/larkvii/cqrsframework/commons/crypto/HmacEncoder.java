@@ -1,9 +1,10 @@
-package com.github.larkvii.cqrsframework.commons.security;
+package com.github.larkvii.cqrsframework.commons.crypto;
+
+import com.github.larkvii.cqrsframework.commons.util.Charsets;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.Charset;
 import java.util.Base64;
 import java.util.Objects;
 
@@ -12,13 +13,18 @@ import java.util.Objects;
  */
 public final class HmacEncoder {
 
-  private static final String ALGORITHM = "HmacSHA1";
-  private final Charset defaultCharset = Charset.forName("utf-8");
+  private final String algorithm;
   private final byte[] keyBytes;
 
   public HmacEncoder(final String key) {
+    this("HmacSHA1", key);
+  }
+
+  public HmacEncoder(final String algorithm, final String key) {
+    Objects.requireNonNull(algorithm);
     Objects.requireNonNull(key);
-    this.keyBytes = key.getBytes(defaultCharset);
+    this.algorithm = algorithm;
+    this.keyBytes = key.getBytes(Charsets.UTF_8);
   }
 
   public String encode(final String text) {
@@ -26,37 +32,32 @@ public final class HmacEncoder {
   }
 
   public String encode(final String text, final String salt) {
-    byte[] hashedBytes = encodeToBytes(text, salt);
+    byte[] hashedBytes = encode(Charsets.getBytesUtf8(text), salt);
     if (hashedBytes != null) {
       return Base64.getEncoder().encodeToString(hashedBytes);
     }
     return null;
   }
 
-  public byte[] encodeToBytes(final String text, final String salt) {
-    if (text == null) {
-      return null;
-    }
-    byte[] textBytes = text.getBytes(defaultCharset);
+  public byte[] encode(final byte[] plainBytes, final String salt) {
+    Objects.requireNonNull(plainBytes);
     byte[] saltBytes = null;
     if (salt != null) {
-      saltBytes = salt.getBytes(defaultCharset);
+      saltBytes = salt.getBytes(Charsets.UTF_8);
     }
     // hash
-    SecretKey secretKey = new SecretKeySpec(keyBytes, ALGORITHM);
+    SecretKey secretKey = new SecretKeySpec(keyBytes, algorithm);
     byte[] hashedBytes = null;
     try {
-      Mac mac = Mac.getInstance(ALGORITHM);
+      Mac mac = Mac.getInstance(algorithm);
       mac.init(secretKey);
       if (saltBytes != null) {
         mac.update(saltBytes);
       }
-      hashedBytes = mac.doFinal(textBytes);
+      hashedBytes = mac.doFinal(plainBytes);
     } catch (Exception e) {
-      //log.error("Failed to hash text", e);
+      throw new IllegalStateException(e);
     }
     return hashedBytes;
   }
-
-
 }

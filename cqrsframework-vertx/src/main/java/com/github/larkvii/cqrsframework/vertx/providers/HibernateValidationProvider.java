@@ -16,7 +16,7 @@ import java.util.Set;
  *
  */
 @Provider
-public final class HibernateValidationProvider extends ValidatorContextResolver {
+public class HibernateValidationProvider extends ValidatorContextResolver {
 
   private final ValidatorFactory validatorFactory;
 
