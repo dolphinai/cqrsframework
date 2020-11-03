@@ -19,16 +19,16 @@ public class Moment {
   public Moment() {
     this(Instant.now(), ZoneId.systemDefault());
   }
-  public Moment(final Instant instant) {
-    this(instant, ZoneId.systemDefault());
+  public Moment(final Instant instantValue) {
+    this(instantValue, ZoneId.systemDefault());
   }
-  public Moment(final Instant instant, final ZoneId zoneId) {
-    this.instant = instant;
-    this.zoneId = zoneId;
+  public Moment(final Instant instantValue, final ZoneId zoneValue) {
+    this.instant = instantValue;
+    this.zoneId = zoneValue;
   }
 
-  public Moment zone(final ZoneId zoneId) {
-    this.zoneId = zoneId;
+  public Moment zone(final ZoneId zoneValue) {
+    this.zoneId = zoneValue;
     return this;
   }
 

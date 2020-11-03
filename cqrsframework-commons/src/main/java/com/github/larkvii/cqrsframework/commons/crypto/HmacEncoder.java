@@ -20,10 +20,10 @@ public final class HmacEncoder {
     this("HmacSHA1", key);
   }
 
-  public HmacEncoder(final String algorithm, final String key) {
-    Objects.requireNonNull(algorithm);
+  public HmacEncoder(final String secretAlgorithm, final String key) {
+    Objects.requireNonNull(secretAlgorithm);
     Objects.requireNonNull(key);
-    this.algorithm = algorithm;
+    this.algorithm = secretAlgorithm;
     this.keyBytes = key.getBytes(Charsets.UTF_8);
   }
 
