@@ -36,19 +36,37 @@ public class Moment {
     return instant;
   }
 
-  public Moment plusMillis(long millis) {
+  public long timeMillis() {
+    return instant.toEpochMilli();
+  }
+
+  public Calendar calendar() {
+    return GregorianCalendar.from(ZonedDateTime.ofInstant(instant, zoneId));
+  }
+
+  public long between(final Moment target) {
+    return ChronoUnit.SECONDS.between(this.toLocalDateTime(), target.toLocalDateTime());
+  }
+
+  public Moment addMillis(long millis) {
     return new Moment(instant.plusMillis(millis));
   }
-  public Moment plusSeconds(long seconds) {
+  public Moment addSeconds(long seconds) {
     return new Moment(instant.plusSeconds(seconds));
   }
-  public Moment plus(long value, final ChronoUnit unit) {
+  public Moment add(long value, final ChronoUnit unit) {
     return new Moment(instant.plus(value, unit));
   }
-  public Moment plus(final Duration duration) {
+  public Moment add(final Duration duration) {
     return new Moment(instant.plus(duration));
   }
-  public Moment minus(final Duration duration) {
+  public Moment subtractSeconds(long seconds) {
+    return new Moment(instant.minusSeconds(seconds));
+  }
+  public Moment subtract(long value, final ChronoUnit unit) {
+    return new Moment(instant.minus(value, unit));
+  }
+  public Moment subtract(final Duration duration) {
     return new Moment(instant.minus(duration));
   }
 
@@ -60,16 +78,8 @@ public class Moment {
     return formatter.format(instant);
   }
 
-  public long toTimeMillis() {
-    return instant.toEpochMilli();
-  }
-
   public Date toDate() {
     return Date.from(instant);
-  }
-
-  public Calendar toCalendar() {
-    return GregorianCalendar.from(ZonedDateTime.ofInstant(instant, zoneId));
   }
 
   public Timestamp toTimestamp() {
@@ -140,4 +150,5 @@ public class Moment {
     }
     return new Moment(result, zone);
   }
+
 }
