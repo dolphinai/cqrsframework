@@ -12,6 +12,7 @@ import java.util.function.Consumer;
 
 /**
  */
+@SuppressWarnings("unchecked")
 public abstract class AbstractEventSubscription implements EventSubscription, DisposableBean {
 
   private static final Logger log = LoggerFactory.getLogger(AbstractEventSubscription.class);
