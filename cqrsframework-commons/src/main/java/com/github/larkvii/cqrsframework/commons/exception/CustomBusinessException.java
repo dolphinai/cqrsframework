@@ -10,6 +10,7 @@ import java.util.Objects;
 public class CustomBusinessException extends AppRuntimeException {
 
   private String code;
+  private String path;
 
   public CustomBusinessException() {
     super();
@@ -31,9 +32,19 @@ public class CustomBusinessException extends AppRuntimeException {
     return code;
   }
 
+  public String getPath() {
+    return path;
+  }
+
   public CustomBusinessException withCode(final String errorCode) {
     Objects.requireNonNull(errorCode);
     this.code = errorCode;
+    return this;
+  }
+
+  public CustomBusinessException withPath(final String errorPath) {
+    Objects.requireNonNull(path);
+    this.path = path;
     return this;
   }
 
