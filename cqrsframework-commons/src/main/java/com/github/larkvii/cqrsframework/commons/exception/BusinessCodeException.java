@@ -7,24 +7,24 @@ import java.util.Objects;
 /**
  *
  */
-public class CustomBusinessException extends AppRuntimeException {
+public class BusinessCodeException extends AppRuntimeException {
 
   private String code;
   private String path;
 
-  public CustomBusinessException() {
+  public BusinessCodeException() {
     super();
   }
 
-  public CustomBusinessException(final String message) {
+  public BusinessCodeException(final String message) {
     super(message);
   }
 
-  public CustomBusinessException(final String message, final Throwable throwable) {
+  public BusinessCodeException(final String message, final Throwable throwable) {
     super(message, throwable);
   }
 
-  public CustomBusinessException(final Throwable throwable) {
+  public BusinessCodeException(final Throwable throwable) {
     super(throwable);
   }
 
@@ -36,19 +36,19 @@ public class CustomBusinessException extends AppRuntimeException {
     return path;
   }
 
-  public CustomBusinessException withCode(final String errorCode) {
+  public BusinessCodeException withCode(final String errorCode) {
     Objects.requireNonNull(errorCode);
     this.code = errorCode;
     return this;
   }
 
-  public CustomBusinessException withPath(final String errorPath) {
+  public BusinessCodeException withPath(final String errorPath) {
     Objects.requireNonNull(path);
     this.path = path;
     return this;
   }
 
-  public final CustomBusinessException of(final String errorCode) {
-    return new CustomBusinessException().withCode(errorCode);
+  public final BusinessCodeException of(final String errorCode) {
+    return new BusinessCodeException().withCode(errorCode);
   }
 }
