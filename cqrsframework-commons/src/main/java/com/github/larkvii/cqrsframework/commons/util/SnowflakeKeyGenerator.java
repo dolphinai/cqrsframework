@@ -121,7 +121,7 @@ public final class SnowflakeKeyGenerator {
     long deltaSeconds = uid >>> (workerBits + seqBits);
 
     Date thatTime = new Date(TimeUnit.SECONDS.toMillis(baseEpoch + deltaSeconds));
-    String thatTimeStr = DateUtils.formatToDateTime(thatTime);
+    String thatTimeStr = DateUtils.toDateTimeString(thatTime);
 
     // format as string
     return String.format("{\"UID\":\"%d\",\"timestamp\":\"%s\",\"workerId\":\"%d\",\"sequence\":\"%d\"}",

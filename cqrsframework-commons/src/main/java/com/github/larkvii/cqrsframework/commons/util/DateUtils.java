@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -13,58 +12,24 @@ import java.util.Objects;
  */
 public final class DateUtils {
 
-  private DateUtils() {
-  }
-
   public static final String PATTERN_DATE = "yyyy-MM-dd";
   public static final String PATTERN_COMPACT_DATE = "yyyyMMdd";
   public static final String PATTERN_COMPACT_MONTH = "yyyyMM";
   public static final String PATTERN_DATETIME = "yyyy-MM-dd HH:mm:ss";
 
-  public static long currentTimestamp() {
-    return System.currentTimeMillis();
+  private DateUtils() {
   }
 
-  public static Date now() {
-    return Date.from(Instant.now());
-  }
-
-  /**
-   * Get the Calendar with current time.
-   *
-   * @return
-   */
-  public static Calendar getCalendar() {
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTime(now());
-    return calendar;
-  }
-
-  public static Date parse(final String date, final String pattern) {
+  public static Date from(final String date, final String pattern) {
     Objects.requireNonNull(date);
+    Objects.requireNonNull(pattern);
     LocalDateTime localDateTime = LocalDateTime.parse(date, DateTimeFormatter.ofPattern(pattern));
     Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
     return Date.from(instant);
   }
 
-  public static Date parseByDateTime(final String date) {
-    return parse(date, PATTERN_DATETIME);
-  }
-
-  public static String format(final Date date, final String pattern) {
-    if (date == null) {
-      return "";
-    }
-    Instant instant = date.toInstant();
-    return format(instant, pattern);
-  }
-
-  public static String format(final Instant instant, final String pattern) {
-    if (instant == null) {
-      return "";
-    }
-    LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-    return localDateTime.format(DateTimeFormatter.ofPattern(pattern));
+  public static Date fromDateTime(final String date) {
+    return from(date, PATTERN_DATETIME);
   }
 
   /**
@@ -73,7 +38,7 @@ public final class DateUtils {
    * @param date
    * @return
    */
-  public static String formatToDate(final Date date) {
+  public static String toDateString(final Date date) {
     return format(date, PATTERN_DATE);
   }
 
@@ -83,7 +48,7 @@ public final class DateUtils {
    * @param date
    * @return
    */
-  public static String formatToCompactDate(final Date date) {
+  public static String toCompactDateString(final Date date) {
     return format(date, PATTERN_COMPACT_DATE);
   }
 
@@ -93,8 +58,16 @@ public final class DateUtils {
    * @param date
    * @return
    */
-  public static String formatToDateTime(final Date date) {
+  public static String toDateTimeString(final Date date) {
     return format(date, PATTERN_DATETIME);
+  }
+
+  public static String format(final Date date, final String pattern) {
+    if (date == null) {
+      return "";
+    }
+    LocalDateTime dateTime = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+    return dateTime.format(DateTimeFormatter.ofPattern(pattern));
   }
 
 }

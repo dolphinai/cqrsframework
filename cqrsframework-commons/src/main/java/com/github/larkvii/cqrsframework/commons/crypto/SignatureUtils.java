@@ -8,7 +8,7 @@ import java.security.spec.X509EncodedKeySpec;
  */
 public final class SignatureUtils {
 
-  public SignatureUtils() {}
+  private SignatureUtils() {}
 
   /**
    * 私钥签名.

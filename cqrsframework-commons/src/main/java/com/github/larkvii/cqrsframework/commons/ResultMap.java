@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public final class ResultMap extends HashMap<String, Object> {
 
-  public static final String DEFAULT_SUCCESS_CODE = "000";
+  public static final String DEFAULT_SUCCESS_CODE = "0";
   public static final String DEFAULT_FAIL_CODE = "-1";
 
   private ResultMap(String returnCode, String returnMessage) {
@@ -41,4 +41,5 @@ public final class ResultMap extends HashMap<String, Object> {
   public static ResultMap fail() {
     return of(DEFAULT_FAIL_CODE, "Failed");
   }
+
 }
