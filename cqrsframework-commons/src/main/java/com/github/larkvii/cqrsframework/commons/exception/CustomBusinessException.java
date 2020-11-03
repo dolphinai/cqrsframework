@@ -36,4 +36,8 @@ public class CustomBusinessException extends AppRuntimeException {
     this.code = errorCode;
     return this;
   }
+
+  public final CustomBusinessException of(final String errorCode) {
+    return new CustomBusinessException().withCode(errorCode);
+  }
 }

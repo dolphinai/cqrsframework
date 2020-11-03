@@ -39,7 +39,10 @@ public final class ResultMap extends HashMap<String, Object> {
   }
 
   public static ResultMap fail() {
-    return of(DEFAULT_FAIL_CODE, "Failed");
+    return fail(DEFAULT_FAIL_CODE);
   }
 
+  public static ResultMap fail(final String errorCode) {
+    return of(errorCode, "Failed");
+  }
 }
