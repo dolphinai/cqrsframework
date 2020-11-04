@@ -4,15 +4,14 @@ import java.sql.Timestamp;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Objects;
+import java.time.temporal.TemporalAccessor;
+import java.util.*;
 
 /**
  */
-public class Moment {
+public final class Moment {
 
+  private static final ZoneId TIMEZONE_UTC = ZoneId.of("UTC");
   private final Instant instant;
   private ZoneId zoneId;
 
@@ -28,15 +27,18 @@ public class Moment {
   }
 
   public Moment zone(final ZoneId zoneValue) {
-    this.zoneId = zoneValue;
-    return this;
+    return new Moment(instant, zoneValue);
+  }
+
+  public Moment utc() {
+    return zone(TIMEZONE_UTC);
   }
 
   public Instant value() {
     return instant;
   }
 
-  public long timeMillis() {
+  public long valueOf() {
     return instant.toEpochMilli();
   }
 
@@ -44,8 +46,19 @@ public class Moment {
     return GregorianCalendar.from(ZonedDateTime.ofInstant(instant, zoneId));
   }
 
-  public long between(final Moment target) {
-    return ChronoUnit.SECONDS.between(this.toLocalDateTime(), target.toLocalDateTime());
+  public long diff(final Moment target) {
+    return diff(target, ChronoUnit.SECONDS);
+  }
+
+  public long diff(final Moment target, final ChronoUnit unit) {
+    return unit.between(this.toLocalDateTime(), target.toLocalDateTime());
+  }
+
+  public Moment truncateMinutes() {
+    return new Moment(instant.truncatedTo(ChronoUnit.HOURS));
+  }
+  public Moment truncateTime() {
+    return new Moment(instant.truncatedTo(ChronoUnit.DAYS));
   }
 
   public Moment addMillis(long millis) {
@@ -59,6 +72,9 @@ public class Moment {
   }
   public Moment add(final Duration duration) {
     return new Moment(instant.plus(duration));
+  }
+  public Moment subtractMillis(long millis) {
+    return new Moment(instant.minusMillis(millis));
   }
   public Moment subtractSeconds(long seconds) {
     return new Moment(instant.minusSeconds(seconds));
@@ -89,14 +105,28 @@ public class Moment {
   public LocalDateTime toLocalDateTime() {
     return LocalDateTime.ofInstant(instant, zoneId);
   }
-
   public LocalDate toLocalDate() {
     return toLocalDateTime().toLocalDate();
+  }
+  public LocalTime toLocalTime() {
+    return toLocalDateTime().toLocalTime();
   }
 
   @Override
   public String toString() {
     return instant.toString();
+  }
+
+  public static boolean isValid(final String date, final String pattern) {
+    final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern).withZone(ZoneId.systemDefault());
+    boolean resultFlag = false;
+    try {
+      formatter.parse(date);
+      resultFlag = true;
+    } catch (Exception e) {
+      // ignore
+    }
+    return resultFlag;
   }
 
   public static Moment now() {
@@ -112,7 +142,8 @@ public class Moment {
   }
 
   public static Moment from(final Calendar calendar) {
-    return from(calendar.toInstant());
+    final ZoneId zoneValue = calendar.getTimeZone() == null ? ZoneId.systemDefault() : calendar.getTimeZone().toZoneId();
+    return new Moment(calendar.toInstant(), zoneValue);
   }
 
   public static Moment from(long epochMills) {
@@ -120,17 +151,12 @@ public class Moment {
   }
 
   public static Moment from(final String value) {
-    Objects.requireNonNull(value);
-    ZoneId zone = ZoneId.systemDefault();
-    Instant result;
-    if (value.indexOf(":") > -1) {
-      final LocalDateTime localDateTime = LocalDateTime.parse(value, DateTimeFormatter.ISO_DATE_TIME);
-      result = localDateTime.atZone(zone).toInstant();
-    } else {
-      final LocalDate localDate = LocalDate.parse(value, DateTimeFormatter.ISO_DATE);
-      result = localDate.atStartOfDay(zone).toInstant();
-    }
-    return new Moment(result, zone);
+    return from(value, TIMEZONE_UTC);
+  }
+
+  public static Moment from(final String value, final ZoneId zone) {
+    Objects.requireNonNull(zone);
+    return from(value, DateTimeFormatter.ISO_DATE_TIME.withZone(zone));
   }
 
   public static Moment from(final String value, final String pattern) {
@@ -138,17 +164,26 @@ public class Moment {
   }
 
   public static Moment from(final String value, final String pattern, ZoneId zone) {
-    Objects.requireNonNull(value);
     Objects.requireNonNull(pattern);
-    Instant result;
-    if (pattern.indexOf("HH") == 1 || pattern.indexOf("hh") == 1) {
-      final LocalDateTime localDateTime = LocalDateTime.parse(value, DateTimeFormatter.ofPattern(pattern));
-      result = localDateTime.atZone(zone).toInstant();
-    } else {
-      final LocalDate localDate = LocalDate.parse(value, DateTimeFormatter.ofPattern(pattern));
-      result = localDate.atStartOfDay(zone).toInstant();
-    }
-    return new Moment(result, zone);
+    Objects.requireNonNull(zone);
+    return from(value, DateTimeFormatter.ofPattern(pattern).withZone(zone));
   }
 
+  public static Moment from(final String value, final DateTimeFormatter formatter) {
+    Objects.requireNonNull(value);
+    Objects.requireNonNull(formatter);
+    final ZoneId zone = formatter.getZone() == null ? ZoneId.systemDefault() : formatter.getZone();
+    final TemporalAccessor accessor = formatter.parseBest(value, LocalDateTime::from, LocalDate::from, LocalTime::from);
+    Instant instantValue;
+    if (accessor instanceof LocalDateTime) {
+      instantValue = ((LocalDateTime) accessor).atZone(zone).toInstant();
+    } else if (accessor instanceof LocalDate) {
+      instantValue = ((LocalDate) accessor).atStartOfDay(zone).toInstant();
+    } else if (accessor instanceof LocalTime) {
+      instantValue = ((LocalTime) accessor).atDate(LocalDate.now()).atZone(zone).toInstant();
+    } else {
+      throw new DateTimeException("Unknown DateTimeFormatter");
+    }
+    return new Moment(instantValue, zone);
+  }
 }

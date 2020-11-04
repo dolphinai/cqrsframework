@@ -7,24 +7,24 @@ import java.util.Objects;
 /**
  *
  */
-public class BusinessCodeException extends AppRuntimeException {
+public class CustomException extends AppRuntimeException {
 
   private String code;
   private String path;
 
-  public BusinessCodeException() {
+  public CustomException() {
     super();
   }
 
-  public BusinessCodeException(final String message) {
+  public CustomException(final String message) {
     super(message);
   }
 
-  public BusinessCodeException(final String message, final Throwable throwable) {
+  public CustomException(final String message, final Throwable throwable) {
     super(message, throwable);
   }
 
-  public BusinessCodeException(final Throwable throwable) {
+  public CustomException(final Throwable throwable) {
     super(throwable);
   }
 
@@ -36,19 +36,19 @@ public class BusinessCodeException extends AppRuntimeException {
     return path;
   }
 
-  public BusinessCodeException withCode(final String errorCode) {
+  public CustomException withCode(final String errorCode) {
     Objects.requireNonNull(errorCode);
     this.code = errorCode;
     return this;
   }
 
-  public BusinessCodeException withPath(final String errorPath) {
+  public CustomException withPath(final String errorPath) {
     Objects.requireNonNull(path);
     this.path = path;
     return this;
   }
 
-  public final BusinessCodeException of(final String errorCode) {
-    return new BusinessCodeException().withCode(errorCode);
+  public final CustomException of(final String errorCode) {
+    return new CustomException().withCode(errorCode);
   }
 }
