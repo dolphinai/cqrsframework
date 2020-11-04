@@ -3,6 +3,7 @@ package com.github.larkvii.cqrsframework.commons.util;
 import org.springframework.util.StringUtils;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 

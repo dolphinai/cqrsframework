@@ -5,11 +5,11 @@ import java.util.HashMap;
 
 public final class ResultMap extends HashMap<String, Object> {
 
-  public static final String DEFAULT_SUCCESS_CODE = "0";
-  public static final String DEFAULT_FAIL_CODE = "-1";
+  public static final Integer DEFAULT_SUCCESS_CODE = 0;
+  public static final Integer DEFAULT_FAIL_CODE = -1;
 
-  private ResultMap(String returnCode, String returnMessage) {
-    super(8);
+  private ResultMap(Integer returnCode, String returnMessage) {
+    super(16);
     this.with("code", returnCode)
       .with("message", returnMessage);
   }
@@ -30,7 +30,7 @@ public final class ResultMap extends HashMap<String, Object> {
     return DEFAULT_FAIL_CODE.equals(get("code"));
   }
 
-  public static ResultMap of(final String returnCode, final String returnMessage) {
+  public static ResultMap of(final Integer returnCode, final String returnMessage) {
     return new ResultMap(returnCode, returnMessage);
   }
 
@@ -42,7 +42,7 @@ public final class ResultMap extends HashMap<String, Object> {
     return fail(DEFAULT_FAIL_CODE);
   }
 
-  public static ResultMap fail(final String errorCode) {
+  public static ResultMap fail(final Integer errorCode) {
     return of(errorCode, "Failed");
   }
 }
