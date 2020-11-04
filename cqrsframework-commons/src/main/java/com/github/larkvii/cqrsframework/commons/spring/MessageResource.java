@@ -48,6 +48,6 @@ public final class MessageResource {
   }
 
   private static class MessageResourceHolder {
-    private static MessageResource instance = new MessageResource();
+    private static final MessageResource instance = new MessageResource();
   }
 }

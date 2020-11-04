@@ -1,6 +1,6 @@
 package com.github.larkvii.cqrsframework.commons.crypto;
 
-import com.github.larkvii.cqrsframework.commons.util.Charsets;
+import com.github.larkvii.cqrsframework.commons.util.StringHelper;
 
 import java.security.GeneralSecurityException;
 import java.util.Base64;
@@ -12,7 +12,7 @@ public interface SecretCipher {
       Objects.requireNonNull(plainText);
       byte[] encoded;
       try {
-        encoded = encrypt(Charsets.getBytesUtf8(plainText));
+        encoded = encrypt(StringHelper.getBytesUtf8(plainText));
       } catch (GeneralSecurityException e) {
         throw new IllegalStateException(e);
       }
@@ -30,7 +30,7 @@ public interface SecretCipher {
       } catch (GeneralSecurityException e) {
         throw new IllegalStateException(e);
       }
-      return Charsets.getStringUtf8(data);
+      return StringHelper.getStringUtf8(data);
     }
 
     byte[] decrypt(byte[] encryptedBytes) throws GeneralSecurityException;

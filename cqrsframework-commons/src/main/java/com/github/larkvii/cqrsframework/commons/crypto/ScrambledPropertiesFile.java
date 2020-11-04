@@ -45,12 +45,11 @@ public class ScrambledPropertiesFile extends ScrambledEncoder {
       this.properties.store(output, null);
       output.flush();
       this.setContent(output.toByteArray());
-    } catch (IOException e) {
-      throw e;
     }
     super.save(outputStream);
   }
 
+  /*
     public static void main(String[] args) {
 
     File  file = new File("E:/workspaces/password3.dat");
@@ -76,4 +75,5 @@ public class ScrambledPropertiesFile extends ScrambledEncoder {
         }
 
     }
+   */
 }

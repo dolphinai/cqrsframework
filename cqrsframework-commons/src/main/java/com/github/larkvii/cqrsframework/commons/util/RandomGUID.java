@@ -12,8 +12,8 @@ public final class RandomGUID {
   private static final int PAD_BELOW = 0x10;
   private static final int TWO_BYTES = 0xFF;
 
-  private transient Random random;
-  private transient String seed;
+  private final Random random;
+  private final String seed;
   private String raw;
 
   /*
@@ -62,9 +62,9 @@ public final class RandomGUID {
     long rand = random.nextLong();
     valueBuilder.append(seed);
     valueBuilder.append(":");
-    valueBuilder.append(Long.toString(time));
+    valueBuilder.append(time);
     valueBuilder.append(":");
-    valueBuilder.append(Long.toString(rand));
+    valueBuilder.append(rand);
 
     // md5.
     MessageDigest md5 = null;
@@ -73,7 +73,7 @@ public final class RandomGUID {
     } catch (NoSuchAlgorithmException e) {
       throw new IllegalStateException(e);
     }
-    byte[] valueBytes = Charsets.getBytesUtf8(valueBuilder.toString());
+    byte[] valueBytes = StringHelper.getBytesUtf8(valueBuilder.toString());
     md5.update(valueBytes);
     byte[] array = md5.digest();
     StringBuffer result = new StringBuffer(32);

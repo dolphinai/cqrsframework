@@ -25,7 +25,7 @@ public interface IdGenerator<T extends Serializable> {
 
   final class SnowflakeIdGenerator implements IdGenerator<Long> {
 
-    private SnowflakeKeyGenerator uidGenerator;
+    private final SnowflakeKeyGenerator uidGenerator;
 
     public SnowflakeIdGenerator(long workerId) {
       this.uidGenerator = new SnowflakeKeyGenerator(workerId);

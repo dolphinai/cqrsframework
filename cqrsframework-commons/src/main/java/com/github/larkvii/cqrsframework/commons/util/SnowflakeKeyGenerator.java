@@ -36,10 +36,10 @@ public final class SnowflakeKeyGenerator {
   /**
    * Bits for [sign-> second-> workId-> sequence]
    */
-  private int signBits = 1;
+  private final int signBits = 1;
 
   // the start time, default is 2018-7-1
-  private long baseEpoch = 1530374400000L;
+  private final long baseEpoch = 1530374400000L;
 
   // delta seconds
   private int timeBits = 32;
@@ -56,14 +56,14 @@ public final class SnowflakeKeyGenerator {
   private long sequence = 0L;
   private long lastSecond = -1L;
 
-  private long maxDeltaSeconds;
-  private long maxWorkerId;
-  private long maxSequence;
+  private final long maxDeltaSeconds;
+  private final long maxWorkerId;
+  private final long maxSequence;
 
-  private int timestampShift;
-  private int workerIdShift;
+  private final int timestampShift;
+  private final int workerIdShift;
 
-  private long workerId;
+  private final long workerId;
 
   /**
    * Initialize a uid generator with specified settings.

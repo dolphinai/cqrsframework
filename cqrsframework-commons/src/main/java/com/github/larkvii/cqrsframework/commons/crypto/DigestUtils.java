@@ -1,6 +1,6 @@
 package com.github.larkvii.cqrsframework.commons.crypto;
 
-import com.github.larkvii.cqrsframework.commons.util.Charsets;
+import com.github.larkvii.cqrsframework.commons.util.StringHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,7 +48,7 @@ public final class DigestUtils {
   }
 
   public static String md5(final String original) {
-    return md5(Charsets.getBytesUtf8(original));
+    return md5(StringHelper.getBytesUtf8(original));
   }
 
   public static String sha(final byte[] original) {
@@ -57,7 +57,7 @@ public final class DigestUtils {
   }
 
   public static String sha(final String original) {
-    return sha(Charsets.getBytesUtf8(original));
+    return sha(StringHelper.getBytesUtf8(original));
   }
 
   public static String sha256(final byte[] original) {
@@ -66,7 +66,7 @@ public final class DigestUtils {
   }
 
   public static String sha256(final String original) {
-    return sha256(Charsets.getBytesUtf8(original));
+    return sha256(StringHelper.getBytesUtf8(original));
   }
 
   public static String sha384(final byte[] original) {
@@ -75,7 +75,7 @@ public final class DigestUtils {
   }
 
   public static String sha384(final String original) {
-    return sha384(Charsets.getBytesUtf8(original));
+    return sha384(StringHelper.getBytesUtf8(original));
   }
 
   public static String sha512(final byte[] original) {
@@ -84,7 +84,7 @@ public final class DigestUtils {
   }
 
   public static String sha512(final String original) {
-    return sha512(Charsets.getBytesUtf8(original));
+    return sha512(StringHelper.getBytesUtf8(original));
   }
 
   private static byte[] digest(final String algorithm, final byte[] original) {

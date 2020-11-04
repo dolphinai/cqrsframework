@@ -1,6 +1,6 @@
 package com.github.larkvii.cqrsframework.commons.crypto;
 
-import com.github.larkvii.cqrsframework.commons.util.Charsets;
+import com.github.larkvii.cqrsframework.commons.util.StringHelper;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -58,8 +58,7 @@ public final class SecretCipherImpl implements SecretCipher {
     // long data.
     byte[] result;
     int blockSize = decryptCipher.getBlockSize();
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    try {
+    try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
       int i = 0;
       while (encryptedBytes.length - i * blockSize > 0) {
         outputStream.write(decryptCipher.doFinal(encryptedBytes, i * blockSize, blockSize));
@@ -69,12 +68,6 @@ public final class SecretCipherImpl implements SecretCipher {
       result = outputStream.toByteArray();
     } catch (IOException e) {
       throw new IllegalStateException(e);
-    } finally {
-      try {
-        outputStream.close();
-      } catch (IOException e) {
-        throw new IllegalStateException(e);
-      }
     }
     return result;
   }
@@ -88,7 +81,7 @@ public final class SecretCipherImpl implements SecretCipher {
     }
     // init.
     if (seed != null && seed.length() > 0) {
-      SecureRandom random = new SecureRandom(Charsets.getBytesUtf8(seed));
+      SecureRandom random = new SecureRandom(StringHelper.getBytesUtf8(seed));
       // size: DES=56, AES=128
       generator.init(random);
     }

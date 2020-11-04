@@ -43,8 +43,8 @@ public class CustomException extends AppRuntimeException {
   }
 
   public CustomException withPath(final String errorPath) {
-    Objects.requireNonNull(path);
-    this.path = path;
+    Objects.requireNonNull(errorPath);
+    this.path = errorPath;
     return this;
   }
 

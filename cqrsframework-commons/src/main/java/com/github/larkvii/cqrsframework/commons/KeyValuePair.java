@@ -7,7 +7,6 @@ import java.util.Map;
 
 /**
  */
-@SuppressWarnings("unchecked")
 public final class KeyValuePair implements Map.Entry<String, String> {
 
   private String key;

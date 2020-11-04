@@ -14,13 +14,12 @@ public class ScrambledEncoder {
     (byte) 0x01, (byte) 0x37, (byte) 0xd2, (byte) 0xd7
   };
 
-  private int seed;
+  private int seed = 0xbcf92de;
   private int[] sequence;
   private File filename;
   private transient byte[] content;
 
   public ScrambledEncoder() {
-    setSeed(0xbcf92de);
   }
 
   public ScrambledEncoder(final File file) throws IOException {
@@ -70,8 +69,6 @@ public class ScrambledEncoder {
     Objects.requireNonNull(file);
     try (FileOutputStream outputStream = new FileOutputStream(file)) {
       save(outputStream);
-    } catch (IOException e) {
-      throw e;
     }
   }
 
@@ -80,8 +77,6 @@ public class ScrambledEncoder {
     try (BufferedOutputStream output = new BufferedOutputStream(outputStream)) {
       output.write(data);
       output.flush();
-    } catch (IOException e) {
-      throw e;
     }
   }
 
@@ -131,7 +126,7 @@ public class ScrambledEncoder {
     return xor(result, XOR_KEYS);
   }
 
-  protected static final int[] randomSequence(int seed, int size) {
+  protected static int[] randomSequence(int seed, int size) {
     int[] result = new int[size];
     Random random = new Random(seed);
     for (int i = 0; i < size; i++) {
@@ -146,7 +141,7 @@ public class ScrambledEncoder {
     return result;
   }
 
-  public static final byte[] toByteArray(int value) {
+  public static byte[] toByteArray(int value) {
     byte[] src = new byte[4];
     src[0] = (byte) ((value >> 24) & 0xFF);
     src[1] = (byte) ((value >> 16) & 0xFF);
@@ -155,7 +150,7 @@ public class ScrambledEncoder {
     return src;
   }
 
-  public static final int toInt32(final byte[] values) {
+  public static int toInt32(final byte[] values) {
     int value;
     value = (int) (((values[0] & 0xFF) << 24)
       | ((values[1] & 0xFF) << 16)
@@ -164,7 +159,7 @@ public class ScrambledEncoder {
     return value;
   }
 
-  public static final byte[] xor(final byte[] data, final byte[] keys) {
+  public static byte[] xor(final byte[] data, final byte[] keys) {
     if (data == null || data.length == 0) {
       return data;
     }
