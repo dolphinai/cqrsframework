@@ -5,6 +5,7 @@ import com.github.larkvii.cqrsframework.commons.util.StringHelper;
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Objects;
 
@@ -24,7 +25,7 @@ public final class HmacEncoder {
     Objects.requireNonNull(secretAlgorithm);
     Objects.requireNonNull(key);
     this.algorithm = secretAlgorithm;
-    this.keyBytes = key.getBytes(StringHelper.UTF_8);
+    this.keyBytes = key.getBytes(StandardCharsets.UTF_8);
   }
 
   public String encode(final String text) {
@@ -43,7 +44,7 @@ public final class HmacEncoder {
     Objects.requireNonNull(plainBytes);
     byte[] saltBytes = null;
     if (salt != null) {
-      saltBytes = salt.getBytes(StringHelper.UTF_8);
+      saltBytes = salt.getBytes(StandardCharsets.UTF_8);
     }
     // hash
     SecretKey secretKey = new SecretKeySpec(keyBytes, algorithm);

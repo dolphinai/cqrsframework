@@ -24,11 +24,9 @@ public final class Moment {
   public Moment offset(final ZoneOffset offset) {
     return new Moment(ZonedDateTime.ofInstant(dateTime.toLocalDateTime(), offset, dateTime.getZone()));
   }
-
   public Moment zone(final ZoneId zoneValue) {
     return new Moment(dateTime.toInstant(), zoneValue);
   }
-
   public Moment utc() {
     return zone(TIMEZONE_UTC);
   }
@@ -47,10 +45,23 @@ public final class Moment {
     return GregorianCalendar.from(dateTime);
   }
 
+  public boolean isLeapYear() {
+    int year = dateTime.getYear();
+    return ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0);
+  }
+  public boolean isAfter(final Moment target) {
+    return dateTime.isAfter(target.dateTime);
+  }
+  public boolean isBefore(final Moment target) {
+    return dateTime.isBefore(target.dateTime);
+  }
+  public boolean isEqual(final Moment target) {
+    return dateTime.isEqual(target.dateTime);
+  }
+
   public long diff(final Moment target) {
     return diff(target, ChronoUnit.SECONDS);
   }
-
   public long diff(final Moment target, final ChronoUnit unit) {
     return unit.between(this.dateTime, target.dateTime);
   }
