@@ -96,17 +96,11 @@ public final class RandomGUID {
     if (this.raw == null || this.raw.length() == 0) {
       this.raw = generateRandomGUID();
     }
-    String value = this.raw.toUpperCase();
-    StringBuffer result = new StringBuffer(64);
-    result.append(value.substring(0, 8));
-    result.append("-");
-    result.append(value.substring(8, 12));
-    result.append("-");
-    result.append(value.substring(12, 16));
-    result.append("-");
-    result.append(value.substring(16, 20));
-    result.append("-");
-    result.append(value.substring(20));
-    return result.toString();
+    final String value = this.raw.toUpperCase();
+    return value.substring(0, 8) + "-"
+      + value.substring(8, 12) + "-"
+      + value.substring(12, 16) + "-"
+      + value.substring(16, 20) + "-"
+      + value.substring(20);
   }
 }

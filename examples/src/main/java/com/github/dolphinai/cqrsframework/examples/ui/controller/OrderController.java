@@ -9,6 +9,7 @@ import com.github.dolphinai.cqrsframework.examples.application.query.OrderQueryS
 import com.github.dolphinai.cqrsframework.examples.application.query.OrderVo;
 import com.github.dolphinai.cqrsframework.examples.domain.cmd.OrderCancellationCommand;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

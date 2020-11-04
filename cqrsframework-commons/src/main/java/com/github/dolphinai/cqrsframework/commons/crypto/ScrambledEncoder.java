@@ -30,8 +30,8 @@ public class ScrambledEncoder {
     this.filename = file;
   }
 
-  public void setSeed(final int seed) {
-    this.seed = seed;
+  public void setSeed(final int seedValue) {
+    this.seed = seedValue;
     this.sequence = randomSequence(seed, 4096);
   }
 

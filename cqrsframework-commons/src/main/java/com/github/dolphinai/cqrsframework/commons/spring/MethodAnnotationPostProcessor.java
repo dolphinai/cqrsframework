@@ -1,5 +1,6 @@
 package com.github.dolphinai.cqrsframework.commons.spring;
 
+import lombok.NonNull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -37,17 +38,17 @@ public class MethodAnnotationPostProcessor<T extends Annotation> implements Bean
   }
 
   @Override
-  public void setBeanFactory(final BeanFactory beanFactory) throws BeansException {
+  public void setBeanFactory(@NonNull final BeanFactory beanFactory) throws BeansException {
     this.beanFactory = beanFactory;
   }
 
   @Override
-  public Object postProcessBeforeInitialization(final Object bean, final String beanName) throws BeansException {
+  public Object postProcessBeforeInitialization(@NonNull final Object bean, @NonNull final String beanName) throws BeansException {
     return bean;
   }
 
   @Override
-  public Object postProcessAfterInitialization(final Object bean, final String beanName) throws BeansException {
+  public Object postProcessAfterInitialization(@NonNull final Object bean, @NonNull final String beanName) throws BeansException {
     if (bean instanceof Annotation) {
       return bean;
     }

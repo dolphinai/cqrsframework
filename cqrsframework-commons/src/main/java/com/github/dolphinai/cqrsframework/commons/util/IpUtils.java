@@ -1,11 +1,11 @@
 package com.github.dolphinai.cqrsframework.commons.util;
 
-import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 
 import java.math.BigInteger;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -43,11 +43,11 @@ public final class IpUtils {
   public static Long toIpV4Long(final String ipV4) {
     // IPv4: 32 bits
     final String[] octets = StringUtils.tokenizeToStringArray(ipV4, "\\.");
-    if (octets != null && octets.length == 4) {
+    if (octets.length == 4) {
       return (Long.parseLong(octets[0]) << 24) + (Integer.parseInt(octets[1]) << 16)
         + (Integer.parseInt(octets[2]) << 8) + Integer.parseInt(octets[3]);
     }
-    return null;
+    return 0L;
   }
 
   public static BigInteger toIpV6Int(final String ipv6){
@@ -58,8 +58,8 @@ public final class IpUtils {
       BigInteger part1 = toIpV6Int(part1s);
       BigInteger part2 = toIpV6Int(part2s);
       int part1hasDot = 0;
-      char ch[] = part1s.toCharArray();
-      for(char c : ch){
+      char[] values = part1s.toCharArray();
+      for(char c : values){
         if(c == ':'){
           part1hasDot++;
         }
@@ -67,45 +67,49 @@ public final class IpUtils {
       return part1.shiftLeft(16 * (7 - part1hasDot)).add(part2);
     }
     String[] str = ipv6.split(":");
-    BigInteger big = BigInteger.ZERO;
+    BigInteger result = BigInteger.ZERO;
     for(int i = 0; i < str.length; i++){
       //::1
       if(str[i].isEmpty()){
         str[i] = "0";
       }
-      big = big.add(BigInteger.valueOf(Long.valueOf(str[i], 16)).shiftLeft(16 * (str.length - i - 1)));
+      result = result.add(BigInteger.valueOf(Long.valueOf(str[i], 16)).shiftLeft(16 * (str.length - i - 1)));
     }
-    return big;
+    return result;
   }
 
-  public static String toIpV6String(final BigInteger intIpV6){
-    String str = "";
+  public static String toIpV6String(final BigInteger intIpV6) {
+    StringBuilder str = new StringBuilder();
     BigInteger ipV6 = BigInteger.valueOf(intIpV6.longValue());
     BigInteger ff = BigInteger.valueOf(0xffff);
-    for (int i = 0; i < 8; i++){
-      str = ipV6.and(ff).toString(16) + ":" + str;
+    for (int i = 0; i < 8; i++) {
+      str.insert(0, ipV6.and(ff).toString(16) + ":");
       ipV6 = ipV6.shiftRight(16);
     }
     //去掉最后的：号
-    str = str.substring(0, str.length() - 1);
-    return str.replaceFirst("(^|:)(0+(:|$)){2,8}", "::");
+    str.setLength(str.length() - 1);
+    return str.toString().replaceFirst("(^|:)(0+(:|$)){2,8}", "::");
   }
 
-  public static String toCompleteIpV6(final String strIpv6){
+  public static String toCompleteIpV6(final String strIpv6) {
     final BigInteger big = toIpV6Int(strIpv6);
-    String str = big.toString(16);
-    String completeIpv6Str = "";
-    while(str.length() != 32){
-      str = "0" + str;
+    final StringBuilder str = new StringBuilder(big.toString(16));
+    final StringBuilder completeIpv6Str = new StringBuilder(40);
+    while (str.length() != 32) {
+      str.insert(0, 0);
     }
-    for (int i = 0; i <= str.length(); i += 4){
-      completeIpv6Str += str.substring(i, i + 4);
-      if ((i + 4) == str.length()){
+    for (int i = 0; i <= str.length(); i += 4) {
+      completeIpv6Str.append(str.substring(i, i + 4));
+      if ((i + 4) == str.length()) {
         break;
       }
-      completeIpv6Str += ":";
+      completeIpv6Str.append(":");
     }
-    return completeIpv6Str;
+    return completeIpv6Str.toString();
+  }
+
+  public static boolean isIpV6Loopback(final String ip) {
+    return isIpV6(ip) && (ip.equals("::1") || ip.equals("0:0:0:0:0:0:0:1"));
   }
 
   /**
@@ -114,46 +118,53 @@ public final class IpUtils {
    * @param defaultIpSupplier Default IP supplier
    * @return  Remote IP address
    */
-  public static String getClientIpAddress(final MultiValueMap<String, String> headers, final Supplier<String> defaultIpSupplier) {
+  public static String getClientIpAddress(final Map<String, List<String>> headers, final Supplier<String> defaultIpSupplier) {
     Objects.requireNonNull(headers);
+
     Objects.requireNonNull(defaultIpSupplier);
-    String ip = headers.getFirst("X-Forwarded-For");
+    String ip = getFirstValue(headers.get("X-Forwarded-For"));
     if (isValidIpAddress(ip)) {
       return ip;
     }
-    ip = headers.getFirst("X-Forwarded-For");
+    ip = getFirstValue(headers.get("X-Forwarded-For"));
     if (isValidIpAddress(ip)) {
       return ip;
     }
-    ip = headers.getFirst("Proxy-Client-IP");
+    ip = getFirstValue(headers.get("Proxy-Client-IP"));
     if (isValidIpAddress(ip)) {
       return ip;
     }
-    ip = headers.getFirst("WL-Proxy-Client-IP");
+    ip = getFirstValue(headers.get("WL-Proxy-Client-IP"));
     if (isValidIpAddress(ip)) {
       return ip;
     }
-    ip = headers.getFirst("HTTP_CLIENT_IP");
+    ip = getFirstValue(headers.get("HTTP_CLIENT_IP"));
     if (isValidIpAddress(ip)) {
       return ip;
     }
-    ip = headers.getFirst("HTTP_X_FORWARDED_FOR");
+    ip = getFirstValue(headers.get("HTTP_X_FORWARDED_FOR"));
     if (isValidIpAddress(ip)) {
       return ip;
     }
-    ip = headers.getFirst("X-Real-IP");
+    ip = getFirstValue(headers.get("X-Real-IP"));
     if (isValidIpAddress(ip)) {
       return ip;
     }
     ip = defaultIpSupplier.get();
-    if (ip != null && (ip.equals("0:0:0:0:0:0:0:1") || ip.equals("::1"))) {
+    if (isIpV6Loopback(ip)) {
       return "127.0.0.1";
     }
     return ip;
   }
 
-  private static boolean isValidIpAddress(String ip) {
-    return (!StringUtils.isEmpty(ip) && !"unknown".equalsIgnoreCase(ip));
+  private static String getFirstValue(final List<String> values) {
+    if (values == null || values.isEmpty()) {
+      return null;
+    }
+    return values.get(0);
   }
 
+  private static boolean isValidIpAddress(final String ip) {
+    return (!StringUtils.isEmpty(ip) && !"unknown".equalsIgnoreCase(ip));
+  }
 }

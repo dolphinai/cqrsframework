@@ -57,7 +57,6 @@ public final class SnowflakeKeyGenerator {
   private long lastSecond = -1L;
 
   private final long maxDeltaSeconds;
-  private final long maxWorkerId;
   private final long maxSequence;
 
   private final int timestampShift;
@@ -89,7 +88,7 @@ public final class SnowflakeKeyGenerator {
 
     // initialize max value
     this.maxDeltaSeconds = ~(-1L << timeBits);
-    this.maxWorkerId = ~(-1L << workerBits);
+    long maxWorkerId = ~(-1L << workerBits);
     this.maxSequence = ~(-1L << seqBits);
 
     if (workerId > maxWorkerId) {
