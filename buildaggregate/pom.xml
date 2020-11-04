@@ -6,10 +6,10 @@
   <groupId>com.github.dolphinai.cqrsframework</groupId>
   <artifactId>buildaggregate</artifactId>
   <version>1.0.0-SNAPSHOT</version>
-  <name>${project.artifactId}</name>
+  <name>buildaggregate</name>
   <packaging>pom</packaging>
 
-  <url>http://www.github.com/larkvii/</url>
+  <url>http://www.github.com/dolphinai/</url>
 
   <modules>
     <module>../pom.xml</module>

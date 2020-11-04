@@ -3,15 +3,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.github.larkvii.cqrsframework</groupId>
+    <groupId>com.github.dolphinai.cqrsframework</groupId>
     <artifactId>parent</artifactId>
     <version>1.0.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>cqrsframework-core</artifactId>
-  <version>1.0.0</version>
   <packaging>jar</packaging>
   <name>cqrsframework-core</name>
+  <description>CQRS core package</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -45,7 +45,7 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.github.larkvii.cqrsframework</groupId>
+      <groupId>com.github.dolphinai.cqrsframework</groupId>
       <artifactId>cqrsframework-commons</artifactId>
       <version>1.0.0</version>
     </dependency>

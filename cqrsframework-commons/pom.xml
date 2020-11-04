@@ -2,11 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.github.larkvii.cqrsframework</groupId>
+  <parent>
+    <groupId>com.github.dolphinai.cqrsframework</groupId>
+    <artifactId>parent</artifactId>
+    <version>1.0.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
   <artifactId>cqrsframework-commons</artifactId>
-  <version>1.0.1</version>
   <packaging>jar</packaging>
   <name>cqrsframework-commons</name>
+  <description>Utility package</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -76,11 +81,4 @@
     </plugins>
   </build>
 
-  <distributionManagement>
-    <repository>
-      <id>bintray-larkvii-cqrsframework</id>
-      <name>larkvii-cqrsframework</name>
-      <url>https://api.bintray.com/maven/larkvii/cqrsframework/cqrsframework-commons/;publish=1</url>
-    </repository>
-  </distributionManagement>
 </project>

@@ -3,15 +3,15 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.github.larkvii.cqrsframework</groupId>
+    <groupId>com.github.dolphinai.cqrsframework</groupId>
     <artifactId>parent</artifactId>
     <version>1.0.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>cqrsframework-vertx</artifactId>
-  <version>1.0.0</version>
   <packaging>jar</packaging>
   <name>cqrsframework-vertx</name>
+  <description>Vertx support in this framework</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -83,28 +83,6 @@
   </dependencies>
 
   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>jar-no-fork</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
   </build>
 
-  <distributionManagement>
-    <repository>
-      <id>bintray-larkvii-cqrsframework</id>
-      <name>larkvii-cqrsframework</name>
-      <url>https://api.bintray.com/maven/larkvii/cqrsframework/cqrsframework-vertx/;publish=1</url>
-    </repository>
-  </distributionManagement>
 </project>

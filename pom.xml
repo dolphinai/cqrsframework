@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.github.larkvii.cqrsframework</groupId>
+  <groupId>com.github.dolphinai.cqrsframework</groupId>
   <artifactId>parent</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version>
   <name>parent</name>
-
-  <url>http://www.github.com/larkvii/</url>
+  <description>A simple CQRS framework for Java project</description>
+  <url>https://github.com/dolphinai/cqrsframework</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,6 +21,12 @@
     <resteasy.version>4.5.8.Final</resteasy.version>
     <swagger.version>2.1.5</swagger.version>
   </properties>
+
+  <modules>
+    <module>cqrsframework-commons</module>
+    <module>cqrsframework-core</module>
+    <module>cqrsframework-vertx</module>
+  </modules>
 
   <dependencyManagement>
     <dependencies>
@@ -129,6 +135,32 @@
     </dependencies>
   </dependencyManagement>
 
+
+  <issueManagement>
+    <system>Github Issue</system>
+    <url>https://github.com/dolphinai/cqrsframework/issues</url>
+  </issueManagement>
+
+  <licenses>
+    <license>
+      <name>Mulan Permissive Software License，Version 1</name>
+      <url>http://license.coscl.org.cn/MulanPSL</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Frank</name>
+      <email>franktang@live.com</email>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git@github.com:dolphinai/cqrsframework.git</connection>
+    <developerConnection>scm:git@github.com:dolphinai/cqrsframework.git</developerConnection>
+    <url>git@github.com:dolphinai/cqrsframework.git</url>
+  </scm>
+
   <build>
     <pluginManagement>
       <plugins>
@@ -150,32 +182,116 @@
           <artifactId>maven-resources-plugin</artifactId>
         </plugin>
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <annotationProcessorPaths>
-              <path>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>1.18.12</version>
-              </path>
-            </annotationProcessorPaths>
-          </configuration>
-        </plugin>
-        <plugin>
           <groupId>org.raml</groupId>
           <artifactId>raml-to-pojo-maven-plugin</artifactId>
           <version>1.0.6</version>
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+      <!-- Javadoc -->
+      <!--
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.1.1</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>1.18.12</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 
-  <distributionManagement>
-    <repository>
-      <id>bintray-larkvii-cqrsframework</id>
-      <name>larkvii-cqrsframework</name>
-      <url>https://api.bintray.com/maven/larkvii/cqrsframework/parent/;publish=1</url>
-    </repository>
-  </distributionManagement>
+  <profiles>
+    <profile>
+      <id>release</id>
+      <distributionManagement>
+        <snapshotRepository>
+          <id>oss</id>
+          <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+          <id>oss</id>
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+      </distributionManagement>
+      <build>
+        <plugins>
+          <!-- Source -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>3.2.1</version>
+            <executions>
+              <execution>
+                <id>oss</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <!-- Gpg Signature -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.6</version>
+            <executions>
+              <execution>
+                <id>oss</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>1.6.8</version>
+            <extensions>true</extensions>
+            <configuration>
+              <serverId>oss</serverId>
+              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+              <autoReleaseAfterClose>true</autoReleaseAfterClose>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
