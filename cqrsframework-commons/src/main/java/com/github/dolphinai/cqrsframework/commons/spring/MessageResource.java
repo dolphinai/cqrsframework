@@ -32,7 +32,7 @@ public final class MessageResource {
     } catch (NoSuchMessageException e) {
       if (locale != null) {
         try {
-          result = getResources().getMessage(key, args, null);
+          result = getResources().getMessage(key, args, Locale.ENGLISH);
         } catch (Exception e1) {
           log.error("Not found the message key:" + key, e1);
         }

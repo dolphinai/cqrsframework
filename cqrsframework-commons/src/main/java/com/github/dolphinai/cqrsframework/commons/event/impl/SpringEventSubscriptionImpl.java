@@ -1,7 +1,7 @@
 package com.github.dolphinai.cqrsframework.commons.event.impl;
 
-import lombok.NonNull;
 import org.springframework.context.ApplicationListener;
+import org.springframework.lang.Nullable;
 
 /**
  */
@@ -12,7 +12,7 @@ public class SpringEventSubscriptionImpl extends AbstractEventSubscription imple
   }
 
   @Override
-  public void onApplicationEvent(@NonNull final WrappedEvent wrappedEvent) {
+  public void onApplicationEvent(@Nullable final WrappedEvent wrappedEvent) {
     if (wrappedEvent != null) {
       onProcessEvent(wrappedEvent.getEvent());
     }

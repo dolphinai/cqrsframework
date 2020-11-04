@@ -1,11 +1,11 @@
 package com.github.dolphinai.cqrsframework.commons.spring;
 
-import lombok.NonNull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -38,17 +38,17 @@ public class MethodAnnotationPostProcessor<T extends Annotation> implements Bean
   }
 
   @Override
-  public void setBeanFactory(@NonNull final BeanFactory beanFactory) throws BeansException {
+  public void setBeanFactory(@Nullable final BeanFactory beanFactory) throws BeansException {
     this.beanFactory = beanFactory;
   }
 
   @Override
-  public Object postProcessBeforeInitialization(@NonNull final Object bean, @NonNull final String beanName) throws BeansException {
+  public Object postProcessBeforeInitialization(@Nullable final Object bean, @Nullable final String beanName) throws BeansException {
     return bean;
   }
 
   @Override
-  public Object postProcessAfterInitialization(@NonNull final Object bean, @NonNull final String beanName) throws BeansException {
+  public Object postProcessAfterInitialization(@Nullable final Object bean, @Nullable final String beanName) throws BeansException {
     if (bean instanceof Annotation) {
       return bean;
     }

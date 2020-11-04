@@ -48,7 +48,7 @@ public final class HmacEncoder {
     }
     // hash
     SecretKey secretKey = new SecretKeySpec(keyBytes, algorithm);
-    byte[] hashedBytes = null;
+    byte[] hashedBytes;
     try {
       Mac mac = Mac.getInstance(algorithm);
       mac.init(secretKey);

@@ -1,9 +1,11 @@
 package com.github.dolphinai.cqrsframework.commons.spring;
 
-import lombok.NonNull;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.lang.Nullable;
+
+import java.util.Objects;
 
 /**
  *
@@ -13,7 +15,8 @@ public final class SpringContextUtils implements ApplicationContextAware {
   private static ApplicationContext applicationContext;
 
   @Override
-  public void setApplicationContext(@NonNull final ApplicationContext context) throws BeansException {
+  public void setApplicationContext(@Nullable final ApplicationContext context) throws BeansException {
+    Objects.requireNonNull(context);
     applicationContext = context;
   }
 

@@ -1,13 +1,14 @@
 package com.github.dolphinai.cqrsframework.commons.spring;
 
-import lombok.NonNull;
 import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.core.MethodIntrospector;
 import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.lang.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public final class AnnotationHelper {
@@ -33,7 +34,8 @@ public final class AnnotationHelper {
     final Map<Method, T> annotatedMethods = MethodIntrospector.selectMethods(targetClass,
       new MethodIntrospector.MetadataLookup<T>() {
         @Override
-        public T inspect(@NonNull Method method) {
+        public T inspect(@Nullable Method method) {
+          Objects.requireNonNull(method);
           return AnnotatedElementUtils.getMergedAnnotation(method, annotationClass);
         }
       });

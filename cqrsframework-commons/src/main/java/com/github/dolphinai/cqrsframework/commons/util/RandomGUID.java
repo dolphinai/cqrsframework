@@ -57,7 +57,7 @@ public final class RandomGUID {
    * Method to generate the random GUID
    */
   private String generateRandomGUID() {
-    StringBuffer valueBuilder = new StringBuffer(128);
+    StringBuilder valueBuilder = new StringBuilder(128);
     long time = System.currentTimeMillis();
     long rand = random.nextLong();
     valueBuilder.append(seed);
@@ -67,7 +67,7 @@ public final class RandomGUID {
     valueBuilder.append(rand);
 
     // md5.
-    MessageDigest md5 = null;
+    MessageDigest md5;
     try {
       md5 = MessageDigest.getInstance("MD5");
     } catch (NoSuchAlgorithmException e) {
@@ -76,7 +76,7 @@ public final class RandomGUID {
     byte[] valueBytes = StringHelper.getBytesUtf8(valueBuilder.toString());
     md5.update(valueBytes);
     byte[] array = md5.digest();
-    StringBuffer result = new StringBuffer(32);
+    StringBuilder result = new StringBuilder(32);
     for (int j = 0; j < array.length; ++j) {
       int b = array[j] & TWO_BYTES;
       if (b < PAD_BELOW) {
