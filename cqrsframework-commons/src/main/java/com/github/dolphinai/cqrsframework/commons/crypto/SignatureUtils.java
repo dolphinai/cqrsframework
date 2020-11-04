@@ -5,18 +5,19 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 /**
+ * Signature Utility.
  */
 public final class SignatureUtils {
 
   private SignatureUtils() {}
 
   /**
-   * 私钥签名.
-   * @param algorithm
-   * @param privateKey
-   * @param originalData
-   * @return
-   * @throws GeneralSecurityException
+   * Sign the original byte array with Private Key.
+   * @param algorithm     security algorithm
+   * @param privateKey    private key
+   * @param originalData  original byte array
+   * @return  signed byte array
+   * @throws GeneralSecurityException exception
    */
   public static byte[] sign(final String algorithm, final Key privateKey, final byte[] originalData) throws GeneralSecurityException {
 
@@ -37,12 +38,13 @@ public final class SignatureUtils {
   }
 
   /**
-   * 公钥验证签名.
-   * @param algorithm
-   * @param publicKey
-   * @param originalData
-   * @return
-   * @throws GeneralSecurityException
+   * Verify the signed byte array with public key.
+   * @param algorithm     security algorithm
+   * @param publicKey     public key
+   * @param originalData  original byte array
+   * @param signedData    signed byte array
+   * @return  signed is matched to original or not
+   * @throws GeneralSecurityException exception
    */
   public static boolean verify(final String algorithm, final Key publicKey, final byte[] originalData, final byte[] signedData) throws GeneralSecurityException {
 

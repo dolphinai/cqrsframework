@@ -23,6 +23,8 @@ public final class AnnotationHelper {
     String typeName = targetClass.getName();
     if (nonAnnotatedClasses.contains(targetClass)
       || typeName.startsWith("org.springframework")
+      || typeName.startsWith("org.jboss")
+      || typeName.startsWith("org.hibernate")
       || typeName.startsWith("java.")
       || typeName.startsWith("javax.")) {
       return null;

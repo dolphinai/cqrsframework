@@ -5,9 +5,11 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
 /**
+ * Date operation object.
  */
 public final class Moment {
 
@@ -27,6 +29,10 @@ public final class Moment {
   public Moment zone(final ZoneId zoneValue) {
     return new Moment(dateTime.toInstant(), zoneValue);
   }
+  /**
+   * Set the timezone to UTC.
+   * @return new Moment instance
+   */
   public Moment utc() {
     return zone(TIMEZONE_UTC);
   }
@@ -34,17 +40,32 @@ public final class Moment {
   public ZonedDateTime value() {
     return dateTime;
   }
-  public Instant instant() {
-    return dateTime.toInstant();
-  }
+  /**
+   * Gets the time millis value.
+   * @return Epoch millis
+   */
   public long valueOf() {
     return instant().toEpochMilli();
   }
-
+  /**
+   * Get Instant instance.
+   * @return Current Instance value.
+   */
+  public Instant instant() {
+    return dateTime.toInstant();
+  }
+  /**
+   * Convert to GregorianCalendar instance.
+   * @return New Calendar instance
+   */
   public Calendar calendar() {
     return GregorianCalendar.from(dateTime);
   }
 
+  /**
+   * Verify that it is a leap year.
+   * @return Is leap year or not
+   */
   public boolean isLeapYear() {
     int year = dateTime.getYear();
     return ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0);
@@ -66,11 +87,26 @@ public final class Moment {
     return unit.between(this.dateTime, target.dateTime);
   }
 
+  /**
+   * Makes minutes/seconds to 0 in the Moment object.
+   * @return New Moment object.
+   */
   public Moment truncateToHours() {
     return new Moment(dateTime.truncatedTo(ChronoUnit.HOURS));
   }
+  /**
+   * Makes hours/minutes/seconds to 0 in the Moment object.
+   * @return New Moment object.
+   */
   public Moment truncateTime() {
     return new Moment(dateTime.truncatedTo(ChronoUnit.DAYS));
+  }
+
+  public Moment getFirstDayOfMonth() {
+    return new Moment(dateTime.with(TemporalAdjusters.firstDayOfMonth()));
+  }
+  public Moment getLastDayOfMonth() {
+    return new Moment(dateTime.with(TemporalAdjusters.lastDayOfMonth()));
   }
 
   public Moment addSeconds(long seconds) {

@@ -18,11 +18,11 @@ import java.util.concurrent.TimeUnit;
  * }</pre>
  * <p>
  * You can also specified the bits by Spring property setting.
- * <li>snowflake.timeBits: default as 32
- * <li>snowflake.workerBits: default as 8
- * <li>snowflake.dbBits: default as 8
- * <li>snowflake.seqBits: default as 15
- * <li>snowflake.baseDate: Epoch date string format 'yyyy-MM-dd'. Default as '2018-07-01'<p>
+ *  - snowflake.timeBits: default as 32
+ * - snowflake.workerBits: default as 8
+ * - snowflake.dbBits: default as 8
+ * - snowflake.seqBits: default as 15
+ * - snowflake.baseDate: Epoch date string format 'yyyy-MM-dd'. Default as '2018-07-01'<p>
  *
  * <b>Note that:</b> The total bits must be 64 -1
  *
@@ -188,13 +188,14 @@ public final class SnowflakeKeyGenerator {
   }
 
   /**
-   * Allocate bits for UID according to delta seconds & workerId & sequence<br>
+   * Allocate bits for UID according to delta seconds / workerId / sequence.
    * <b>Note that: </b>The highest bit will always be 0 for sign
    *
-   * @param deltaSeconds
-   * @param workerId
-   * @param sequence
-   * @return
+   * @param deltaSeconds  seconds
+   * @param workerId      worker Id
+   * @param dbId          db id
+   * @param sequence      sequence
+   * @return              allocation
    */
   public long allocate(long deltaSeconds, long workerId, long dbId, long sequence) {
     return (deltaSeconds << timestampShift) | (workerId << workerIdShift) | sequence;
@@ -221,7 +222,9 @@ public final class SnowflakeKeyGenerator {
   /**
    * Get the worker id by using the last x bits of the local ip address
    *
-   * @throws AppRuntimeException
+   * @param  bits  length
+   * @return        new worker id.
+   * @throws AppRuntimeException  Custom exception
    */
   public static long getWorkerIdByIP(int bits) throws AppRuntimeException {
     int shift = 64 - bits;

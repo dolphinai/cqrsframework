@@ -3,14 +3,33 @@ package com.github.dolphinai.cqrsframework.commons.util;
 import java.io.Serializable;
 import java.util.UUID;
 
+/**
+ * Id Generator support.
+ *
+ * @param <T> Id Type.
+ */
 public interface IdGenerator<T extends Serializable> {
 
+  /**
+   * Gets the next id.
+   *
+   * @return New id
+   */
   T next();
 
+  /**
+   * UUID generator.
+   * @return IdGenerator instance
+   */
   static IdGenerator<String> uuid() {
     return new UUIDGenerator();
   }
 
+  /**
+   * Snowflake generator.
+   * @param workerId Worker id.
+   * @return IdGenerator instance
+   */
   static IdGenerator<Long> snowflakeNumberId(long workerId) {
     return new SnowflakeIdGenerator(workerId);
   }

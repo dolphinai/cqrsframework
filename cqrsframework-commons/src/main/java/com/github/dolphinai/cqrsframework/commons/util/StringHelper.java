@@ -1,27 +1,49 @@
 package com.github.dolphinai.cqrsframework.commons.util;
 
-import org.springframework.util.StringUtils;
+import org.springframework.lang.Nullable;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Locale;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  *
  */
 public final class StringHelper {
+
+  public static final String EMPTY = "";
+
   private StringHelper() {
   }
 
   /**
-   * 判断是否纯数字的字符串.
+   * Verify if the text is blank (whitespace only)
    *
-   * @param value
-   * @return
+   * @param value Text
+   * @return Indicator
+   */
+  public static boolean isBlank(@Nullable final String value) {
+    return value == null || value.trim().length() == 0;
+  }
+
+  /**
+   *
+   * Verify if the text is empty String.
+   *
+   * @param value Text
+   * @return Indicator
+   */
+  public static boolean isEmpty(@Nullable final String value) {
+    return value == null || value.length() == 0;
+  }
+
+  /**
+   * Verify that if the text just contains numeric.
+   *
+   * @param value Text
+   * @return Indicator
    */
   public static boolean isNumeric(final String value) {
-    if (!StringUtils.hasText(value)) {
+    if (isBlank(value)) {
       return false;
     }
     int size = value.length();
@@ -34,8 +56,8 @@ public final class StringHelper {
     return true;
   }
 
-  public static String orEmpty(final String value) {
-    return Optional.ofNullable(value).orElse("");
+  public static String orEmpty(@Nullable final String value) {
+    return value == null ? EMPTY : value;
   }
 
   public static String getStringUtf8(final byte[] bytes) {

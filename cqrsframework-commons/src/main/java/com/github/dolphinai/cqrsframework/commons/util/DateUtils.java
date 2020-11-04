@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
- *
+ * Date Utility.
  */
 public final class DateUtils {
 
@@ -32,32 +32,14 @@ public final class DateUtils {
     return from(date, PATTERN_DATETIME);
   }
 
-  /**
-   * 转换为日期. 2020-01-01
-   *
-   * @param date
-   * @return
-   */
   public static String toDateString(final Date date) {
     return format(date, PATTERN_DATE);
   }
 
-  /**
-   * 转换为日期. 20200101
-   *
-   * @param date
-   * @return
-   */
   public static String toCompactDateString(final Date date) {
     return format(date, PATTERN_COMPACT_DATE);
   }
 
-  /**
-   * 转换为日期和时间. 2020-01-01 01:01:01
-   *
-   * @param date
-   * @return
-   */
   public static String toDateTimeString(final Date date) {
     return format(date, PATTERN_DATETIME);
   }
