@@ -1,10 +1,6 @@
 package com.github.dolphinai.cqrsframework.commons.crypto;
 
-import com.github.dolphinai.cqrsframework.commons.util.StringHelper;
-
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.*;
@@ -15,7 +11,7 @@ public final class SecretCipherImpl implements SecretCipher {
   private final Cipher decryptCipher;
 
   public SecretCipherImpl(final String transform, final String key) throws GeneralSecurityException {
-    this(transform, generateKey(transform, key));
+    this(transform, KeyStoreFile.generateKey(transform, key));
   }
 
   public SecretCipherImpl(final String transform, final Key key) throws GeneralSecurityException {
@@ -70,21 +66,5 @@ public final class SecretCipherImpl implements SecretCipher {
       throw new IllegalStateException(e);
     }
     return result;
-  }
-
-  public static SecretKey generateKey(final String algorithm, final String seed) {
-    KeyGenerator generator;
-    try {
-      generator = KeyGenerator.getInstance(algorithm);
-    } catch (NoSuchAlgorithmException e) {
-      throw new IllegalStateException(e);
-    }
-    // init.
-    if (seed != null && seed.length() > 0) {
-      SecureRandom random = new SecureRandom(StringHelper.getBytesUtf8(seed));
-      // size: DES=56, AES=128
-      generator.init(random);
-    }
-    return generator.generateKey();
   }
 }

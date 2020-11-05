@@ -17,16 +17,15 @@ import java.util.function.BiConsumer;
 /**
  */
 @SuppressWarnings("unchecked")
-public class MethodAnnotationPostProcessor<T extends Annotation> implements BeanFactoryAware, BeanPostProcessor, DisposableBean {
+public class MethodAnnotatedPostProcessor<T extends Annotation> implements BeanFactoryAware, BeanPostProcessor, DisposableBean {
 
   private final Set<Class<?>> nonAnnotatedClasses = Collections.newSetFromMap(new ConcurrentHashMap(64));
   private final Class<T> supportedClass;
-  private final BiConsumer<Object, Method> methodProxyHandler;
   private BeanFactory beanFactory;
+  private BiConsumer<Object, Method> methodProxyHandler;
 
-  public MethodAnnotationPostProcessor(final Class<T> supportedClazz, final BiConsumer<Object, Method> methodProxyHandler) {
+  public MethodAnnotatedPostProcessor(final Class<T> supportedClazz) {
     this.supportedClass = supportedClazz;
-    this.methodProxyHandler = methodProxyHandler;
   }
 
   public Class<T> getSupportedType() {
@@ -35,6 +34,10 @@ public class MethodAnnotationPostProcessor<T extends Annotation> implements Bean
 
   public BeanFactory getBeanFactory() {
     return beanFactory;
+  }
+
+  public void setMethodProxyHandler(final BiConsumer<Object, Method> proxyHandler) {
+    this.methodProxyHandler = proxyHandler;
   }
 
   @Override
@@ -61,8 +64,10 @@ public class MethodAnnotationPostProcessor<T extends Annotation> implements Bean
     return bean;
   }
 
-  protected void createProxy(Object bean, Method method) {
-    this.methodProxyHandler.accept(bean, method);
+  protected void createProxy(final Object bean, final Method method) {
+    if (this.methodProxyHandler != null) {
+      this.methodProxyHandler.accept(bean, method);
+    }
   }
 
   @Override

@@ -1,7 +1,10 @@
 package com.github.dolphinai.cqrsframework.commons.crypto;
 
+import com.github.dolphinai.cqrsframework.commons.util.StringHelper;
 import lombok.SneakyThrows;
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.*;
@@ -57,6 +60,22 @@ public final class KeyStoreFile {
 
   public Certificate getCertificate(final String alias)throws GeneralSecurityException {
     return keystore.getCertificate(alias);
+  }
+
+  public static SecretKey generateKey(final String algorithm, final String seed) {
+    KeyGenerator generator;
+    try {
+      generator = KeyGenerator.getInstance(algorithm);
+    } catch (NoSuchAlgorithmException e) {
+      throw new IllegalStateException(e);
+    }
+    // init.
+    if (seed != null && seed.length() > 0) {
+      SecureRandom random = new SecureRandom(StringHelper.getBytesUtf8(seed));
+      // size: DES=56, AES=128
+      generator.init(random);
+    }
+    return generator.generateKey();
   }
 
   public static PublicKey getPublicKey(final InputStream inputStream) throws CertificateException {
