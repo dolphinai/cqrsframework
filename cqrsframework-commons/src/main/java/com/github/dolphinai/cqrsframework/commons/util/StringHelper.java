@@ -56,8 +56,34 @@ public final class StringHelper {
     return true;
   }
 
-  public static String orEmpty(@Nullable final String value) {
+  public static String ifEmpty(@Nullable final String value) {
     return value == null ? EMPTY : value;
+  }
+
+  public static String padStart(final String source, int minLength, final char padChar) {
+    Objects.requireNonNull(source);
+    if (source.length() >= minLength) {
+      return source;
+    }
+    StringBuilder builder = new StringBuilder(minLength);
+    for (int i = source.length(); i < minLength; ++i) {
+      builder.append(padChar);
+    }
+    builder.append(source);
+    return builder.toString();
+  }
+
+  public static String padEnd(final String source, int minLength, final char padChar) {
+    Objects.requireNonNull(source);
+    if (source.length() >= minLength) {
+      return source;
+    }
+    StringBuilder builder = new StringBuilder(minLength);
+    builder.append(source);
+    for (int i = source.length(); i < minLength; ++i) {
+      builder.append(padChar);
+    }
+    return builder.toString();
   }
 
   public static String getStringUtf8(final byte[] bytes) {
