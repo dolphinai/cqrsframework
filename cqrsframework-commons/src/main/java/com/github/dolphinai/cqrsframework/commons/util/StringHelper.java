@@ -25,6 +25,10 @@ public final class StringHelper {
     return value == null || value.trim().length() == 0;
   }
 
+  public static boolean isNotBlank(@Nullable final String value) {
+    return !isBlank(value);
+  }
+
   /**
    *
    * Verify if the text is empty String.
@@ -34,6 +38,10 @@ public final class StringHelper {
    */
   public static boolean isEmpty(@Nullable final String value) {
     return value == null || value.length() == 0;
+  }
+
+  public static boolean isNotEmpty(@Nullable final String value) {
+    return !isEmpty(value);
   }
 
   /**
