@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,9 +28,9 @@ public abstract class AbstractEventSubscription implements EventSubscription, Di
   }
 
   @Override
-  public <T> void subscribe(final Class<T> eventClass, final Consumer<T> handler) {
-    Objects.requireNonNull(handler);
-    this.listeners.put(eventClass.getName(), handler);
+  public <T> void subscribe(final Class<T> eventClass, final Consumer<T> eventProcessor) {
+    Objects.requireNonNull(eventProcessor);
+    this.listeners.put(eventClass.getName(), eventProcessor);
   }
 
   @Override
@@ -38,8 +39,13 @@ public abstract class AbstractEventSubscription implements EventSubscription, Di
   }
 
   @Override
-  public void destroy() throws Exception {
+  public void close() throws IOException {
     this.listeners.clear();
+  }
+
+  @Override
+  public void destroy() throws Exception {
+    close();
   }
 
   protected void onProcessEvent(Object event) {
