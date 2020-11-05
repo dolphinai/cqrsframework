@@ -13,13 +13,13 @@ import java.util.function.BiConsumer;
 public class MethodAnnotatedInterceptor<T extends Annotation> implements MethodInterceptor {
 
   private final Class<T> annotationType;
-  private BiConsumer<T, Object[]> preHandler;
+  private BiConsumer<T, MethodInvocation> preHandler;
 
   public MethodAnnotatedInterceptor(final Class<T> type) {
     this.annotationType = type;
   }
 
-  public void setPreHandler(final BiConsumer<T, Object[]> methodPreHandler) {
+  public void setPreHandler(final BiConsumer<T, MethodInvocation> methodPreHandler) {
     this.preHandler = methodPreHandler;
   }
 
@@ -27,14 +27,14 @@ public class MethodAnnotatedInterceptor<T extends Annotation> implements MethodI
   public Object invoke(final MethodInvocation invocation) throws Throwable {
     T annotation = getAnnotation(invocation.getMethod());
     if (annotation != null) {
-      onPreHandler(annotation, invocation.getArguments());
+      onPreHandler(annotation, invocation);
     }
     return invocation.proceed();
   }
 
-  protected void onPreHandler(final T annotationObject, final Object[] arguments) {
+  protected void onPreHandler(final T annotationObject, final MethodInvocation invocation) {
     if(preHandler != null) {
-      preHandler.accept(annotationObject, arguments);
+      preHandler.accept(annotationObject, invocation);
     }
   }
 

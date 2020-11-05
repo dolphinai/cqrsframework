@@ -16,6 +16,12 @@ public final class MessageBundle implements Closeable {
 
   private static final Logger log = LoggerFactory.getLogger(MessageBundle.class);
   private MessageSource messageSource;
+  private Locale defaultLocale = null;
+
+  public MessageBundle defaultLanguage(final Locale locale) {
+    this.defaultLocale = locale;
+    return this;
+  }
 
   public MessageSource source() {
     if (messageSource == null) {
@@ -35,7 +41,7 @@ public final class MessageBundle implements Closeable {
     } catch (NoSuchMessageException e) {
       if (locale != null) {
         try {
-          result = source().getMessage(key, args, Locale.ENGLISH);
+          result = source().getMessage(key, args, defaultLocale);
         } catch (Exception e1) {
           log.error("Not found the message key:" + key, e1);
         }
