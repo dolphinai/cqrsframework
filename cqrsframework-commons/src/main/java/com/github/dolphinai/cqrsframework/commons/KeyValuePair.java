@@ -50,8 +50,8 @@ public final class KeyValuePair implements Map.Entry<String, String> {
       '}';
   }
 
-  public static KeyValuePair of(final String key, final String value) {
-    return new KeyValuePair(key, value);
+  public static KeyValuePair of(final String key, final Object value) {
+    return new KeyValuePair(key, value == null ? null : value.toString());
   }
 
   public static List<KeyValuePair> of(final Map<String, String> map) {

@@ -31,5 +31,4 @@ public final class SpringContextUtils implements ApplicationContextAware {
   public static <T> T getBean(final Class<T> clazz) {
     return applicationContext.getBean(clazz);
   }
-
 }
