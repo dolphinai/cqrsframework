@@ -1,5 +1,6 @@
 package com.github.dolphinai.cqrsframework.commons.util;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -46,8 +47,16 @@ public final class DbUtils {
       return expect(1);
     }
 
+    public <T> T single(final Function<Boolean, T> handler) {
+      return handler.apply(single());
+    }
+
     public boolean many() {
       return rows >= 1;
+    }
+
+    public <T> T many(final Function<Boolean, T> handler) {
+      return handler.apply(many());
     }
 
     public boolean expect(int expectedRows) {
