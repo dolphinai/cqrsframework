@@ -30,11 +30,11 @@ public final class CollectionUtils {
    * @param <T> Generic type
    * @return First element
    */
-  public static <T> Optional<T> firstElement(final Collection<T> list) {
+  public static <T> T firstElement(final Collection<T> list) {
     if (list == null || list.isEmpty()) {
-      return Optional.empty();
+      return null;
     }
-    return Optional.ofNullable(list.iterator().next());
+    return list.iterator().next();
   }
 
   /**

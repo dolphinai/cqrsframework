@@ -120,33 +120,32 @@ public final class IpUtils {
    */
   public static String getClientIpAddress(final Map<String, List<String>> headers, final Supplier<String> defaultIpSupplier) {
     Objects.requireNonNull(headers);
-
     Objects.requireNonNull(defaultIpSupplier);
-    String ip = getFirstValue(headers.get("X-Forwarded-For"));
+    String ip = CollectionUtils.firstElement(headers.get("X-Forwarded-For"));
     if (isValidIpAddress(ip)) {
       return ip;
     }
-    ip = getFirstValue(headers.get("X-Forwarded-For"));
+    ip = CollectionUtils.firstElement(headers.get("X-Forwarded-For"));
     if (isValidIpAddress(ip)) {
       return ip;
     }
-    ip = getFirstValue(headers.get("Proxy-Client-IP"));
+    ip = CollectionUtils.firstElement(headers.get("Proxy-Client-IP"));
     if (isValidIpAddress(ip)) {
       return ip;
     }
-    ip = getFirstValue(headers.get("WL-Proxy-Client-IP"));
+    ip = CollectionUtils.firstElement(headers.get("WL-Proxy-Client-IP"));
     if (isValidIpAddress(ip)) {
       return ip;
     }
-    ip = getFirstValue(headers.get("HTTP_CLIENT_IP"));
+    ip = CollectionUtils.firstElement(headers.get("HTTP_CLIENT_IP"));
     if (isValidIpAddress(ip)) {
       return ip;
     }
-    ip = getFirstValue(headers.get("HTTP_X_FORWARDED_FOR"));
+    ip = CollectionUtils.firstElement(headers.get("HTTP_X_FORWARDED_FOR"));
     if (isValidIpAddress(ip)) {
       return ip;
     }
-    ip = getFirstValue(headers.get("X-Real-IP"));
+    ip = CollectionUtils.firstElement(headers.get("X-Real-IP"));
     if (isValidIpAddress(ip)) {
       return ip;
     }
@@ -155,13 +154,6 @@ public final class IpUtils {
       return "127.0.0.1";
     }
     return ip;
-  }
-
-  private static String getFirstValue(final List<String> values) {
-    if (values == null || values.isEmpty()) {
-      return null;
-    }
-    return values.get(0);
   }
 
   private static boolean isValidIpAddress(final String ip) {
