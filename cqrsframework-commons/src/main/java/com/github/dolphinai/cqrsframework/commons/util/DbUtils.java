@@ -30,18 +30,28 @@ public final class DbUtils {
     return "%" + filter + "%";
   }
 
-  public static boolean singleAffected(final Supplier<Integer> sqlHandler) {
-    return manyAffected(sqlHandler, 1);
+  public static RowAffected affected(final Supplier<Integer> sqlHandler) {
+    return new RowAffected(sqlHandler.get());
   }
 
-  public static boolean manyAffected(final Supplier<Integer> sqlHandler) {
-    Integer affected = sqlHandler.get();
-    return affected != null && affected >= 1;
-  }
+  public static final class RowAffected {
 
-  public static boolean manyAffected(final Supplier<Integer> sqlHandler, int expectedRows) {
-    Integer affected = sqlHandler.get();
-    return affected != null && affected.equals(expectedRows);
-  }
+    private final int rows;
 
+    RowAffected(final int affected) {
+      this.rows = affected;
+    }
+
+    public boolean single() {
+      return expect(1);
+    }
+
+    public boolean many() {
+      return rows >= 1;
+    }
+
+    public boolean expect(int expectedRows) {
+      return expectedRows == rows;
+    }
+  }
 }
