@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 /**
  */
+@SuppressWarnings("unchecked")
 public final class CollectionUtils {
 
   private CollectionUtils(){}
@@ -20,6 +21,20 @@ public final class CollectionUtils {
     Objects.requireNonNull(source);
     Objects.requireNonNull(transformer);
     return source.stream().map(s -> transformer.apply(s)).collect(Collectors.toList());
+  }
+
+  /**
+   * Get first element from the collection.
+   *
+   * @param list source
+   * @param <T> Generic type
+   * @return First element
+   */
+  public static <T> Optional<T> firstElement(final Collection<T> list) {
+    if (list == null || list.isEmpty()) {
+      return Optional.empty();
+    }
+    return Optional.ofNullable(list.iterator().next());
   }
 
   /**
