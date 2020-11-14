@@ -36,7 +36,7 @@ public final class DbUtils {
 
   public static boolean manyAffected(final Supplier<Integer> sqlHandler) {
     Integer affected = sqlHandler.get();
-    return affected != null && affected.intValue() >= 1;
+    return affected != null && affected >= 1;
   }
 
   public static boolean manyAffected(final Supplier<Integer> sqlHandler, int expectedRows) {
