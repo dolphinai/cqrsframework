@@ -1,8 +1,6 @@
 package com.github.dolphinai.cqrsframework.commons.util;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -24,13 +22,27 @@ public final class CollectionUtils {
     return source.stream().map(s -> transformer.apply(s)).collect(Collectors.toList());
   }
 
-  public static <T> List<T> addAll(final List<T> source, final T[] values) {
-    Objects.requireNonNull(source);
-    Objects.requireNonNull(values);
-    for (T item : values) {
-      source.add(item);
+  /**
+   * Convert an Array to a Map object.
+   *
+   * @param values  Key1, Value1, Key2, Value2 ...
+   * @param <T> Type
+   * @return  Map instance
+   */
+  public static <T> Map<String, T> asMap(final T... values) {
+    if (values == null || values.length == 0) {
+      return Collections.emptyMap();
     }
-    return source;
+    final Map<String, T> result = new HashMap<>();
+    for (int i = 0; i < values.length; ) {
+      String key = String.valueOf(values[i]);
+      T value = null;
+      if (i + 1 < values.length) {
+        value = values[i + 1];
+      }
+      result.put(key, value);
+      i = i + 2;
+    }
+    return result;
   }
-
 }
