@@ -1,6 +1,6 @@
 package com.github.dolphinai.cqrsframework.commons.util;
 
-import java.util.function.Function;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -47,16 +47,22 @@ public final class DbUtils {
       return expect(1);
     }
 
-    public <T> T single(final Function<Boolean, T> handler) {
-      return handler.apply(single());
+    public <T> Optional<T> single(final Supplier<T> resultHandler) {
+      if (single()) {
+        return Optional.ofNullable(resultHandler.get());
+      }
+      return Optional.empty();
     }
 
     public boolean many() {
       return rows >= 1;
     }
 
-    public <T> T many(final Function<Boolean, T> handler) {
-      return handler.apply(many());
+    public <T> Optional<T> many(final Supplier<T> resultHandler) {
+      if (many()) {
+        return Optional.ofNullable(resultHandler.get());
+      }
+      return Optional.empty();
     }
 
     public boolean expect(int expectedRows) {
