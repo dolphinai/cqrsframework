@@ -37,6 +37,24 @@ public final class CollectionUtils {
     return list.iterator().next();
   }
 
+  public static <T> Map<String, Object> asKeyValueMap(final String... items) {
+    if (items == null || items.length == 0) {
+      return Collections.emptyMap();
+    }
+    final Map<String, Object> result = new HashMap<>();
+    for (String item : items) {
+      if (item.indexOf("=") > -1) {
+        int index = item.indexOf("=");
+        String key = item.substring(0, index);
+        String value = item.substring(index + 1);
+        result.put(key, value);
+      } else {
+        result.put(item, null);
+      }
+    }
+    return result;
+  }
+
   /**
    * Convert an Array to a Map object.
    *
@@ -48,7 +66,7 @@ public final class CollectionUtils {
     if (values == null || values.length == 0) {
       return Collections.emptyMap();
     }
-    final Map<String, T> result = new HashMap<>();
+    final Map<String, T> result = new HashMap<>(values.length);
     for (int i = 0; i < values.length; ) {
       String key = String.valueOf(values[i]);
       T value = null;
