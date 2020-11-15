@@ -36,11 +36,11 @@ public final class StringHelper {
    * @param value Text
    * @return Indicator
    */
-  public static boolean isEmpty(@Nullable final String value) {
-    return value == null || value.length() == 0;
+  public static boolean isEmpty(@Nullable final Object value) {
+    return value == null || value.toString().length() == 0;
   }
 
-  public static boolean isNotEmpty(@Nullable final String value) {
+  public static boolean isNotEmpty(@Nullable final Object value) {
     return !isEmpty(value);
   }
 
