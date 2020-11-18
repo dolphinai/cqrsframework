@@ -13,12 +13,12 @@ public class AppException extends Exception {
     super(message);
   }
 
-  public AppException(final String message, final Throwable throwable) {
-    super(message, throwable);
+  public AppException(final String message, final Throwable cause) {
+    super(message, cause);
   }
 
-  public AppException(final Throwable throwable) {
-    super(throwable);
+  public AppException(final Throwable cause) {
+    super(cause);
   }
 
 }

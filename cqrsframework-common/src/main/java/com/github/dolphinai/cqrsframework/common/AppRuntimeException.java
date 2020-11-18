@@ -13,12 +13,12 @@ public class AppRuntimeException extends RuntimeException {
     super(message);
   }
 
-  public AppRuntimeException(final String message, Throwable throwable) {
-    super(message, throwable);
+  public AppRuntimeException(final String message, Throwable cause) {
+    super(message, cause);
   }
 
-  public AppRuntimeException(final Throwable throwable) {
-    super(throwable);
+  public AppRuntimeException(final Throwable cause) {
+    super(cause);
   }
 
 }

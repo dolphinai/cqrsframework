@@ -15,4 +15,5 @@ public final class NotFoundException extends AppRuntimeException {
   public NotFoundException(String message, Throwable innerException) {
     super(message, innerException);
   }
+
 }

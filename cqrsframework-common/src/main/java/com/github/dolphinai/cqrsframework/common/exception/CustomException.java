@@ -1,13 +1,11 @@
 package com.github.dolphinai.cqrsframework.common.exception;
 
-import com.github.dolphinai.cqrsframework.common.AppRuntimeException;
-
 import java.util.Objects;
 
 /**
  *
  */
-public class CustomException extends AppRuntimeException {
+public class CustomException extends RuntimeException {
 
   private String code;
   private String path;
@@ -20,12 +18,12 @@ public class CustomException extends AppRuntimeException {
     super(message);
   }
 
-  public CustomException(final String message, final Throwable throwable) {
-    super(message, throwable);
+  public CustomException(final String message, final Throwable cause) {
+    super(message, cause);
   }
 
-  public CustomException(final Throwable throwable) {
-    super(throwable);
+  public CustomException(final Throwable cause) {
+    super(cause);
   }
 
   public String getCode() {
