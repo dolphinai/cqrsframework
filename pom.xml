@@ -5,7 +5,7 @@
   <groupId>com.github.dolphinai.cqrsframework</groupId>
   <artifactId>parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <name>parent</name>
   <description>A simple CQRS framework for Java project</description>
   <url>https://github.com/dolphinai/cqrsframework</url>
@@ -24,7 +24,7 @@
   </properties>
 
   <modules>
-    <module>cqrsframework-commons</module>
+    <module>cqrsframework-common</module>
     <module>cqrsframework-core</module>
     <module>cqrsframework-vertx</module>
   </modules>

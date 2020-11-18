@@ -1,7 +1,7 @@
 package com.github.dolphinai.cqrsframework.spring.annotation;
 
 import com.github.dolphinai.cqrsframework.annotation.EventHandler;
-import com.github.dolphinai.cqrsframework.commons.spring.MethodAnnotatedPostProcessor;
+import com.github.dolphinai.cqrsframework.common.spring.MethodAnnotatedPostProcessor;
 import com.github.dolphinai.cqrsframework.spring.interceptors.EventMessageHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
 

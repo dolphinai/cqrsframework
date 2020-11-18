@@ -1,7 +1,7 @@
 package com.github.dolphinai.cqrsframework.core.event;
 
 import com.github.dolphinai.cqrsframework.core.Message;
-import com.github.dolphinai.cqrsframework.commons.util.IdGenerator;
+import com.github.dolphinai.cqrsframework.common.util.IdGenerator;
 import lombok.*;
 
 import java.util.Objects;

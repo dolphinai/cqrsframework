@@ -13,7 +13,7 @@
 
   <modules>
     <module>../pom.xml</module>
-    <module>../cqrsframework-commons</module>
+    <module>../cqrsframework-common</module>
     <module>../cqrsframework-core</module>
     <module>../cqrsframework-vertx</module>
     <module>../examples</module>
