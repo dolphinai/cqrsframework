@@ -7,9 +7,9 @@ import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public final class DigestUtils {
+public final class HashUtils {
 
-  private DigestUtils() {
+  private HashUtils() {
   }
 
   public static String hexEncode(final byte[] originalBytes) {

@@ -1,28 +1,23 @@
 package com.github.dolphinai.cqrsframework.common.crypto;
 
-import com.github.dolphinai.cqrsframework.common.util.StringHelper;
 import lombok.SneakyThrows;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.*;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
 import java.util.Enumeration;
 import java.util.Objects;
 
 /**
  *
  */
-public final class KeyStoreFile {
+public final class KeystoreFile {
 
   private final KeyStore keystore;
   private String defaultAlias;
 
-  public KeyStoreFile(final String storeType, final InputStream keystoreStream, final String keystorePassword) throws GeneralSecurityException {
+  public KeystoreFile(final String storeType, final InputStream keystoreStream, final String keystorePassword) throws GeneralSecurityException {
     Objects.requireNonNull(keystoreStream);
     Objects.requireNonNull(keystorePassword);
 
@@ -60,27 +55,5 @@ public final class KeyStoreFile {
 
   public Certificate getCertificate(final String alias)throws GeneralSecurityException {
     return keystore.getCertificate(alias);
-  }
-
-  public static SecretKey generateKey(final String algorithm, final String seed) {
-    KeyGenerator generator;
-    try {
-      generator = KeyGenerator.getInstance(algorithm);
-    } catch (NoSuchAlgorithmException e) {
-      throw new IllegalStateException(e);
-    }
-    // init.
-    if (seed != null && seed.length() > 0) {
-      SecureRandom random = new SecureRandom(StringHelper.getBytesUtf8(seed));
-      // size: DES=56, AES=128
-      generator.init(random);
-    }
-    return generator.generateKey();
-  }
-
-  public static PublicKey getPublicKey(final InputStream inputStream) throws CertificateException {
-    CertificateFactory cf = CertificateFactory.getInstance("X.509");
-    Certificate crt = cf.generateCertificate(inputStream);
-    return crt.getPublicKey();
   }
 }

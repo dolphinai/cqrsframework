@@ -10,6 +10,13 @@ public final class YnIndicator {
   public static final String YES = "Y";
   public static final String NO = "N";
 
+  public static String toYnString(final String value) {
+    if (value == null) {
+      return null;
+    }
+    return (YES.equalsIgnoreCase(value) || "true".equalsIgnoreCase(value)) ? YES : NO;
+  }
+
   public static String toYnString(final boolean value) {
     return value ? YES : NO;
   }
@@ -23,5 +30,13 @@ public final class YnIndicator {
       return defaultValue;
     }
     return YES.equalsIgnoreCase(yesOrNo);
+  }
+
+  public static void main(String[] args) {
+
+    System.out.println(toYnString("N"));
+    System.out.println(toYnString("true"));
+    System.out.println(toYnString("Y"));
+    System.out.println(toYnString(false));
   }
 }
