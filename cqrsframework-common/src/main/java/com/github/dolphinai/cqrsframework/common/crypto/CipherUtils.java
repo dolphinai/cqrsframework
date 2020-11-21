@@ -1,5 +1,7 @@
 package com.github.dolphinai.cqrsframework.common.crypto;
 
+import com.github.dolphinai.cqrsframework.common.util.StringHelper;
+
 import javax.crypto.*;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
@@ -45,6 +47,9 @@ public final class CipherUtils {
   }
 
   public static Cipher encryptCipher(final String algorithm, final Key key, final IvParameterSpec ivParameter) {
+    if(StringHelper.isEmpty(algorithm) || key == null) {
+      return null;
+    }
     Cipher instance;
     try {
       instance = Cipher.getInstance(algorithm);
@@ -60,6 +65,9 @@ public final class CipherUtils {
   }
 
   public static Cipher decryptCipher(final String algorithm, final Key key, final IvParameterSpec ivParameter) {
+    if(StringHelper.isEmpty(algorithm) || key == null) {
+      return null;
+    }
     Cipher instance;
     try {
       instance = Cipher.getInstance(algorithm);
