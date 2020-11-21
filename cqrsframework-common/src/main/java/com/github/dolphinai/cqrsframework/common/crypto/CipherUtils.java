@@ -17,7 +17,8 @@ import java.util.Objects;
  */
 public final class CipherUtils {
 
-  private CipherUtils(){}
+  private CipherUtils() {
+  }
 
   public static PublicKey getPublicKey(final InputStream inputStream) throws CertificateException {
     CertificateFactory cf = CertificateFactory.getInstance("X.509");
@@ -47,34 +48,24 @@ public final class CipherUtils {
   }
 
   public static Cipher encryptCipher(final String algorithm, final Key key, final IvParameterSpec ivParameter) {
-    if(StringHelper.isEmpty(algorithm) || key == null) {
-      return null;
-    }
-    Cipher instance;
-    try {
-      instance = Cipher.getInstance(algorithm);
-      if (ivParameter == null) {
-        instance.init(Cipher.ENCRYPT_MODE, key);
-      } else {
-        instance.init(Cipher.ENCRYPT_MODE, key, ivParameter);
-      }
-    } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException e) {
-      throw new IllegalStateException(e);
-    }
-    return instance;
+    return createCipher(algorithm, Cipher.ENCRYPT_MODE, key, ivParameter);
   }
 
   public static Cipher decryptCipher(final String algorithm, final Key key, final IvParameterSpec ivParameter) {
-    if(StringHelper.isEmpty(algorithm) || key == null) {
+    return createCipher(algorithm, Cipher.DECRYPT_MODE, key, ivParameter);
+  }
+
+  private static Cipher createCipher(final String algorithm, final int mode, final Key key, final IvParameterSpec ivParameter) {
+    if (StringHelper.isEmpty(algorithm) || key == null) {
       return null;
     }
     Cipher instance;
     try {
       instance = Cipher.getInstance(algorithm);
       if (ivParameter == null) {
-        instance.init(Cipher.DECRYPT_MODE, key);
+        instance.init(mode, key);
       } else {
-        instance.init(Cipher.DECRYPT_MODE, key, ivParameter);
+        instance.init(mode, key, ivParameter);
       }
     } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException e) {
       throw new IllegalStateException(e);

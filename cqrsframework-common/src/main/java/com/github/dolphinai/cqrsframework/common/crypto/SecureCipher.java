@@ -3,7 +3,6 @@ package com.github.dolphinai.cqrsframework.common.crypto;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.AlgorithmParameters;
 import java.security.GeneralSecurityException;
 import java.util.function.Supplier;
 
