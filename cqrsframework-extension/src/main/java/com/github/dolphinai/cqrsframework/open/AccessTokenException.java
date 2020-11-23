@@ -1,4 +1,4 @@
-package com.github.dolphinai.cqrsframework.common.exception;
+package com.github.dolphinai.cqrsframework.open;
 
 /**
  */

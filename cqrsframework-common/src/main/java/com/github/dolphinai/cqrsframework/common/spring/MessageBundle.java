@@ -1,5 +1,6 @@
 package com.github.dolphinai.cqrsframework.common.spring;
 
+import com.github.dolphinai.cqrsframework.common.util.StringHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -15,13 +16,8 @@ import java.util.Locale;
 public final class MessageBundle implements Closeable {
 
   private static final Logger log = LoggerFactory.getLogger(MessageBundle.class);
+  private static final Locale nonLocale = new Locale("");
   private MessageSource messageSource;
-  private Locale defaultLocale = null;
-
-  public MessageBundle defaultLanguage(final Locale locale) {
-    this.defaultLocale = locale;
-    return this;
-  }
 
   public MessageSource source() {
     if (messageSource == null) {
@@ -30,24 +26,30 @@ public final class MessageBundle implements Closeable {
     return messageSource;
   }
 
-  public String getMessage(final String key, final Locale locale) {
-    return getMessage(key, null, locale);
+  public String get(final String key) {
+    return get(key, null, nonLocale);
   }
 
-  public String getMessage(final String key, final Object[] args, final Locale locale) {
+  public String get(final String key, final Locale locale) {
+    return get(key, null, locale);
+  }
+
+  public String get(final String key, final Object[] args, final Locale locale) {
     String result = "";
-    try {
-      result = source().getMessage(key, args, locale);
-    } catch (NoSuchMessageException e) {
-      if (locale != null) {
-        try {
-          result = source().getMessage(key, args, defaultLocale);
-        } catch (Exception e1) {
-          log.error("Not found the message key:" + key, e1);
+    if (StringHelper.isNotEmpty(key)) {
+      try {
+        result = source().getMessage(key, args, locale);
+      } catch (NoSuchMessageException e) {
+        if (locale != null) {
+          try {
+            result = source().getMessage(key, args, nonLocale);
+          } catch (Exception e1) {
+            log.error("Not found the message key:" + key, e1);
+          }
         }
+      } catch (Exception e) {
+        log.error("Failed to get message for the key:" + key, e);
       }
-    } catch (Exception e) {
-      log.error("Failed to get message for the key:" + key, e);
     }
     return result;
   }
@@ -57,7 +59,7 @@ public final class MessageBundle implements Closeable {
     messageSource = null;
   }
 
-  public static MessageBundle getInstance() {
+  public static MessageBundle instance() {
     return MessageBundleHolder.instance;
   }
 

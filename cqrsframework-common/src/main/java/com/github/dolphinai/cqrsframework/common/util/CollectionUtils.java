@@ -1,5 +1,8 @@
 package com.github.dolphinai.cqrsframework.common.util;
 
+import org.springframework.util.StringUtils;
+
+import java.io.Serializable;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -23,6 +26,14 @@ public final class CollectionUtils {
     return source.stream().map(s -> transformer.apply(s)).collect(Collectors.toList());
   }
 
+  public static <T> boolean isEmpty(final Collection<T> list) {
+    return list == null || list.isEmpty();
+  }
+
+  public static <T> boolean isEmpty(final T[] array) {
+    return array == null || array.length == 0;
+  }
+
   /**
    * Get first element from the collection.
    *
@@ -37,17 +48,28 @@ public final class CollectionUtils {
     return list.iterator().next();
   }
 
-  public static <T> Map<String, Object> asKeyValueMap(final String... items) {
-    if (items == null || items.length == 0) {
+  public static <T> Map<String, Object> asMap(final String matrixValues) {
+    if (StringHelper.isBlank(matrixValues)) {
       return Collections.emptyMap();
     }
+    final String[] matrixArray = StringUtils.tokenizeToStringArray(matrixValues, ";");
     final Map<String, Object> result = new HashMap<>();
-    for (String item : items) {
+    for (String item : matrixArray) {
       if (item.indexOf("=") > -1) {
         int index = item.indexOf("=");
         String key = item.substring(0, index);
+        // value
         String value = item.substring(index + 1);
-        result.put(key, value);
+        if (value.indexOf(",") > -1) {
+          String[] values = StringUtils.tokenizeToStringArray(value, ",");
+          result.put(key, values);
+        } else {
+          if ("true".equalsIgnoreCase(value) || "false".equalsIgnoreCase(value)) {
+            result.put(key, Boolean.valueOf(value));
+          } else {
+            result.put(key, value);
+          }
+        }
       } else {
         result.put(item, null);
       }
@@ -62,8 +84,8 @@ public final class CollectionUtils {
    * @param <T> Type
    * @return  Map instance
    */
-  public static <T> Map<String, T> asMap(final T... values) {
-    if (values == null || values.length == 0) {
+  public static <T> Map<String, T> asMap(final T[] values) {
+    if (isEmpty(values)) {
       return Collections.emptyMap();
     }
     final Map<String, T> result = new HashMap<>(values.length);
