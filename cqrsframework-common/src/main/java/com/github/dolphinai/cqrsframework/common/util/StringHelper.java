@@ -8,6 +8,7 @@ import java.util.Objects;
 /**
  *
  */
+@SuppressWarnings("unchecked")
 public final class StringHelper {
 
   public static final String EMPTY = "";
@@ -64,8 +65,15 @@ public final class StringHelper {
     return true;
   }
 
-  public static String ifEmpty(@Nullable final String value) {
-    return value == null ? EMPTY : value;
+  public static String orEmpty(@Nullable final Object value) {
+    return value == null ? EMPTY : value.toString();
+  }
+
+  public static <T> T orDefault(@Nullable final Object value, final T defaultValue) {
+    if (value == null || defaultValue == null) {
+      return defaultValue;
+    }
+    return (T) value;
   }
 
   public static String padStart(final String source, int minLength, final char padChar) {

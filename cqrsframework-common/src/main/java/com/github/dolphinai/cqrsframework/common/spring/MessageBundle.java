@@ -9,6 +9,7 @@ import org.springframework.context.NoSuchMessageException;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Optional;
 
 /**
  * MessageSource bundle.
@@ -16,7 +17,7 @@ import java.util.Locale;
 public final class MessageBundle implements Closeable {
 
   private static final Logger log = LoggerFactory.getLogger(MessageBundle.class);
-  private static final Locale nonLocale = new Locale("");
+  public static final Locale NON_LOCALE = new Locale("");
   private MessageSource messageSource;
 
   public MessageSource source() {
@@ -27,22 +28,22 @@ public final class MessageBundle implements Closeable {
   }
 
   public String get(final String key) {
-    return get(key, null, nonLocale);
+    return get(key, NON_LOCALE);
   }
 
   public String get(final String key, final Locale locale) {
-    return get(key, null, locale);
+    return get(key, null, locale).orElse("");
   }
 
-  public String get(final String key, final Object[] args, final Locale locale) {
-    String result = "";
+  public Optional<String> get(final String key, final Object[] args, final Locale locale) {
+    String result = null;
     if (StringHelper.isNotEmpty(key)) {
       try {
         result = source().getMessage(key, args, locale);
       } catch (NoSuchMessageException e) {
         if (locale != null) {
           try {
-            result = source().getMessage(key, args, nonLocale);
+            result = source().getMessage(key, args, NON_LOCALE);
           } catch (Exception e1) {
             log.error("Not found the message key:" + key, e1);
           }
@@ -51,7 +52,7 @@ public final class MessageBundle implements Closeable {
         log.error("Failed to get message for the key:" + key, e);
       }
     }
-    return result;
+    return Optional.ofNullable(result);
   }
 
   @Override
