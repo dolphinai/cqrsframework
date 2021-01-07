@@ -11,11 +11,11 @@ import java.util.function.Function;
 public class ApiClientContextImpl implements ApiClientContext {
 
   private static final Logger log = LoggerFactory.getLogger(ApiClientContext.class);
-  private final Function<ApiClientToken, ApiClientToken> tokenRefreshHandler;
-  private ApiClientToken token;
+  private final Function<ApiToken, ApiToken> tokenRefreshHandler;
+  private ApiToken token;
   private LocalDateTime expiration;
 
-  public ApiClientContextImpl(final Function<ApiClientToken, ApiClientToken> refreshHandler) {
+  public ApiClientContextImpl(final Function<ApiToken, ApiToken> refreshHandler) {
     this.tokenRefreshHandler = refreshHandler;
   }
 

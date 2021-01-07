@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  */
 @Data
-public final class ApiClientToken implements Serializable {
+public final class ApiToken implements Serializable {
 
   private String accessToken;
   private String refreshToken;
@@ -18,5 +18,13 @@ public final class ApiClientToken implements Serializable {
   @Transient
   public boolean isValid() {
     return StringHelper.isNotEmpty(accessToken);
+  }
+
+  public static ApiToken of(final String accessToken, final String refreshToken, final Integer expiresIn) {
+    ApiToken result = new ApiToken();
+    result.setAccessToken(accessToken);
+    result.setRefreshToken(refreshToken);
+    result.setExpiresIn(expiresIn);
+    return result;
   }
 }

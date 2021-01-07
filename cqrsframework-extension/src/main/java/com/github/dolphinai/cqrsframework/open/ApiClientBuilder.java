@@ -1,5 +1,6 @@
 package com.github.dolphinai.cqrsframework.open;
 
+import feign.Feign;
 import feign.Logger;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
@@ -9,25 +10,25 @@ import java.util.function.Supplier;
 
 /**
  */
-public interface ApiClientFactory {
+public interface ApiClientBuilder {
 
-  HystrixFeign.Builder getBuilder();
+  Feign.Builder getBuilder();
 
-  default ApiClientFactory withLevel(Logger.Level logLevel) {
+  default ApiClientBuilder withLevel(Logger.Level logLevel) {
     getBuilder().logLevel(logLevel);
     return this;
   }
 
-  default ApiClientFactory withInterceptor(RequestInterceptor interceptor) {
+  default ApiClientBuilder withInterceptor(RequestInterceptor interceptor) {
     getBuilder().requestInterceptor(interceptor);
     return this;
   }
 
-  default ApiClientFactory withAuthorization(Supplier<String> valueHandler) {
+  default ApiClientBuilder withAuthorization(Supplier<String> valueHandler) {
     return withHeader("Authorization", valueHandler);
   }
 
-  default ApiClientFactory withHeader(String headerName, Supplier<String> valueHandler) {
+  default ApiClientBuilder withHeader(String headerName, Supplier<String> valueHandler) {
     return withInterceptor(new RequestInterceptor() {
       @Override
       public void apply(final RequestTemplate template) {
@@ -42,7 +43,7 @@ public interface ApiClientFactory {
   }
 
   default <T> T create(final Class<T> apiType, final String url, T apiFallbackInstance) {
-    return getBuilder().target(apiType, url, apiFallbackInstance);
+    return ((HystrixFeign.Builder)getBuilder()).target(apiType, url, apiFallbackInstance);
   }
 
 }
