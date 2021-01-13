@@ -197,26 +197,26 @@ public final class Moment {
     return new Moment(Instant.ofEpochMilli(epochMills), ZoneId.systemDefault());
   }
 
-  public static Moment from(final String value) {
+  public static Optional<Moment> from(final String value) {
     return from(value, TIMEZONE_UTC);
   }
 
-  public static Moment from(final String value, final ZoneId zone) {
+  public static Optional<Moment> from(final String value, final ZoneId zone) {
     Objects.requireNonNull(zone);
     return from(value, DateTimeFormatter.ISO_DATE_TIME.withZone(zone));
   }
 
-  public static Moment from(final String value, final String pattern) {
+  public static Optional<Moment> from(final String value, final String pattern) {
     return from(value, pattern, ZoneId.systemDefault());
   }
 
-  public static Moment from(final String value, final String pattern, final ZoneId zone) {
+  public static Optional<Moment> from(final String value, final String pattern, final ZoneId zone) {
     Objects.requireNonNull(pattern);
     Objects.requireNonNull(zone);
     return from(value, DateTimeFormatter.ofPattern(pattern).withZone(zone));
   }
 
-  public static Moment from(final String value, final DateTimeFormatter formatter) {
+  public static Optional<Moment> from(final String value, final DateTimeFormatter formatter) {
     Objects.requireNonNull(value);
     Objects.requireNonNull(formatter);
     final ZoneId zone = formatter.getZone() == null ? ZoneId.systemDefault() : formatter.getZone();
@@ -229,8 +229,8 @@ public final class Moment {
     } else if (accessor instanceof LocalTime) {
       dateTime = ((LocalTime) accessor).atDate(LocalDate.now()).atZone(zone);
     } else {
-      throw new DateTimeException("Unknown DateTimeFormatter");
+      return Optional.empty();
     }
-    return new Moment(dateTime);
+    return Optional.of(new Moment(dateTime));
   }
 }

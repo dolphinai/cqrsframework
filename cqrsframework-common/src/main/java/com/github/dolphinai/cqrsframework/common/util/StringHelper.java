@@ -2,7 +2,10 @@ package com.github.dolphinai.cqrsframework.common.util;
 
 import org.springframework.lang.Nullable;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Objects;
 
 /**
@@ -100,6 +103,24 @@ public final class StringHelper {
       builder.append(padChar);
     }
     return builder.toString();
+  }
+
+  public static String urlEncode(final String urlText) {
+    String result;
+    try {
+      result = URLEncoder.encode(urlText, "UTF-8");
+    } catch (UnsupportedEncodingException e) {
+      throw new RuntimeException(e);
+    }
+    return result;
+  }
+
+  public static String base64Encode(final byte[] plainBytes) {
+    return Base64.getEncoder().encodeToString(plainBytes);
+  }
+
+  public static byte[] base64Decode(final String base64String) {
+    return Base64.getDecoder().decode(base64String);
   }
 
   public static String getStringUtf8(final byte[] bytes) {

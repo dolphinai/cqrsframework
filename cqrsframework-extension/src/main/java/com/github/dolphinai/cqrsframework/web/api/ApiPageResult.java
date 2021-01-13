@@ -9,38 +9,56 @@ import java.util.List;
 
 /**
  */
-@Value
-@AllArgsConstructor
+@Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiPageResult<T> implements Serializable {
 
   // dataTables
-  @With
   private List<T> data;
-  @With
   private Integer draw;
   private long recordsTotal;
   private long recordsFiltered;
-  @With
-  private Integer pageSize;
-  @With
+  private String error;
+  private Integer size;
   private Boolean more;
 
-  public static <T> ApiPageResult<T> of(final List<T> data, final long total) {
-    return new ApiPageResult<>(data, null, total, total, null, null);
+  public ApiPageResult(List<T> data, long total) {
+    this(data, total, null, null);
   }
 
-  public static <T> ApiPageResult<T> of(final List<T> data, long total, int pageSize, int pageNum) {
-    return new ApiPageResult<>(data, null, total, total, pageSize, (pageNum * pageSize) < total);
+  public ApiPageResult(List<T> data, long total, Integer pageSize, Boolean more) {
+    this.data = data;
+    this.recordsTotal = total;
+    this.recordsFiltered = total;
+    this.size = pageSize;
+    this.more = more;
   }
 
-  public static <T> ApiPageResult<T> startOf(final List<T> data, long total, int pageSize, long start) {
-    return new ApiPageResult<>(data, null, total, total, pageSize, (start + pageSize) < total);
+  public ApiPageResult<T> with(int pageSize, int pageNum) {
+    this.setSize(pageSize);
+    return withMore((pageNum * pageSize) < this.recordsTotal);
+  }
+  public ApiPageResult<T> withMore(Boolean value) {
+    this.more = value;
+    return this;
+  }
+  public ApiPageResult<T> withMore(int pageSize, int startPosition) {
+    this.setSize(pageSize);
+    return withMore((startPosition + pageSize) < this.recordsTotal);
   }
 
-  public static <T> ApiPageResult<T> fail() {
-    final ApiPageResult<T> result = of(Collections.emptyList(), 0);
-    result.withMore(false);
+  public static final <T> ApiPageResult<T> of(final List<T> data, final long total) {
+    return new ApiPageResult<>(data, total, null, null);
+  }
+
+  public static final <T> ApiPageResult<T> fail() {
+    return fail(null);
+  }
+
+  public static final <T> ApiPageResult<T> fail(final String errorMessage) {
+    final ApiPageResult<T> result = new ApiPageResult<>(Collections.emptyList(), 0);
+    result.setMore(false);
+    result.setError(errorMessage);
     return result;
   }
 }

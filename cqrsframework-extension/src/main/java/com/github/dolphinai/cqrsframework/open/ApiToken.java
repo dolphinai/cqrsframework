@@ -1,16 +1,18 @@
 package com.github.dolphinai.cqrsframework.open;
 
 import com.github.dolphinai.cqrsframework.common.util.StringHelper;
-import lombok.Data;
+import lombok.Value;
+import lombok.With;
 
 import java.beans.Transient;
 import java.io.Serializable;
 
 /**
  */
-@Data
+@Value
 public final class ApiToken implements Serializable {
 
+  @With
   private String accessToken;
   private String refreshToken;
   private Integer expiresIn;
@@ -21,10 +23,6 @@ public final class ApiToken implements Serializable {
   }
 
   public static ApiToken of(final String accessToken, final String refreshToken, final Integer expiresIn) {
-    ApiToken result = new ApiToken();
-    result.setAccessToken(accessToken);
-    result.setRefreshToken(refreshToken);
-    result.setExpiresIn(expiresIn);
-    return result;
+    return new ApiToken(accessToken, refreshToken, expiresIn);
   }
 }

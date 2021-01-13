@@ -113,10 +113,16 @@ public final class CriteriaMap implements Map<String, Object> {
     }
   }
 
+  public boolean isNullValue(final String key) {
+    return (!containsKey(key) || get(key) == null);
+  }
+
   public CriteriaMap handle(final String key, final Consumer<Object> valueHandler) {
     if (containsKey(key)) {
       Object value = get(key);
-      valueHandler.accept(value);
+      if (value != null) {
+        valueHandler.accept(value);
+      }
     }
     return this;
   }
