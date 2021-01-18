@@ -13,7 +13,7 @@ import java.util.Map;
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ApiPageResult<T> implements Serializable {
+public final class ApiPageResult<T> implements Serializable {
 
   // dataTables
   private List<T> data;
