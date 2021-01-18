@@ -5,7 +5,9 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  */
@@ -21,6 +23,7 @@ public class ApiPageResult<T> implements Serializable {
   private String error;
   private Integer size;
   private Boolean more;
+  private Map<String, Object> props;
 
   public ApiPageResult(List<T> data, long total) {
     this(data, total, null, null);
@@ -45,6 +48,11 @@ public class ApiPageResult<T> implements Serializable {
   public ApiPageResult<T> withMore(int pageSize, int startPosition) {
     this.setSize(pageSize);
     return withMore((startPosition + pageSize) < this.recordsTotal);
+  }
+
+  public ApiPageResult<T> with(final Map<String, Object> value) {
+    this.setProps(value);
+    return this;
   }
 
   public static final <T> ApiPageResult<T> of(final List<T> data, final long total) {
