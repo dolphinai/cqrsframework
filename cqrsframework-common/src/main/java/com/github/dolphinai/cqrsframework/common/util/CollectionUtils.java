@@ -2,7 +2,6 @@ package com.github.dolphinai.cqrsframework.common.util;
 
 import org.springframework.util.StringUtils;
 
-import java.io.Serializable;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -15,14 +14,37 @@ public final class CollectionUtils {
 
   private CollectionUtils(){}
 
-  public static <T> List<T> filter(final Collection<T> source, Predicate<T> filterPredicate) {
+  public static <T> List<T> filter(final Collection<T> source, final Predicate<T> filterPredicate) {
     Objects.requireNonNull(source);
     return source.stream().filter(filterPredicate).collect(Collectors.toList());
   }
 
+  public static <T> Optional<T> first(final Collection<T> source, final Predicate<T> filterPredicate) {
+    if (source == null || source.isEmpty()) {
+      return Optional.empty();
+    }
+    return source.stream().filter(filterPredicate).findFirst();
+  }
+
+  /**
+   * Get first element from the collection.
+   *
+   * @param list source
+   * @param <T> Generic type
+   * @return First element
+   */
+  public static <T> Optional<T> first(final Collection<T> list) {
+    if (list == null || list.isEmpty()) {
+      return Optional.empty();
+    }
+    return Optional.of(list.iterator().next());
+  }
+
   public static <S, R> List<R> transform(final Collection<S> source, final Function<S, R> transformer) {
-    Objects.requireNonNull(source);
     Objects.requireNonNull(transformer);
+    if (source == null || source.isEmpty()) {
+      return Collections.emptyList();
+    }
     return source.stream().map(s -> transformer.apply(s)).collect(Collectors.toList());
   }
 
@@ -34,19 +56,6 @@ public final class CollectionUtils {
     return array == null || array.length == 0;
   }
 
-  /**
-   * Get first element from the collection.
-   *
-   * @param list source
-   * @param <T> Generic type
-   * @return First element
-   */
-  public static <T> T firstElement(final Collection<T> list) {
-    if (list == null || list.isEmpty()) {
-      return null;
-    }
-    return list.iterator().next();
-  }
 
   public static <T> Map<String, Object> asMap(final String matrixValues) {
     if (StringHelper.isBlank(matrixValues)) {
